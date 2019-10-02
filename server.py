@@ -22,6 +22,7 @@ class Handler(BaseHTTPRequestHandler):
                 sendReply = True
             if self.path.endswith(".css"):
                 mimetype = "text/css"
+                sendReply = True
 
             if sendReply:
                 f = open("." + self.path, "rb")

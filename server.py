@@ -20,6 +20,8 @@ class Handler(BaseHTTPRequestHandler):
             if self.path.endswith(".png"):
                 mimetype = "image/png"
                 sendReply = True
+            if self.path.endswith(".css"):
+                mimetype = "text/css"
 
             if sendReply:
                 f = open("." + self.path, "rb")

@@ -23,6 +23,9 @@ class Handler(BaseHTTPRequestHandler):
             if self.path.endswith(".css"):
                 mimetype = "text/css"
                 sendReply = True
+            if self.path.endswith(".ico"):
+                mimetype = "image/icon"
+                sendReply = True
 
             if sendReply:
                 f = open("." + self.path, "rb")

@@ -6,9 +6,11 @@
      xmlns:ev = "http://www.w3.org/2001/xml-events"
      height = "180px"  width = "300px">
      <rect x="0" y="0" width="300" height="180" fill="#182033" />
-     <g fill-opacity="1" stroke="black" stroke-width="0px">
+     <polygon points="0,0 90,90 0,90" fill="#c56249" />
+     <polygon points="45,0 135,90 45,90" fill="#ec9958" />
+     <!--<g fill-opacity="1" stroke="black" stroke-width="0px">
         <circle cx="200px" cy="200px" r="104px" fill="red"   transform="translate(  0,-52)" />
         <circle cx="200px" cy="200px" r="104px" fill="blue"  transform="translate( 60, 52)" />
         <circle cx="200px" cy="200px" r="104px" fill="green" transform="translate(-60, 52)" />
-     </g>
+     </g>-->
 </svg>

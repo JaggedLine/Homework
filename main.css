@@ -1,9 +1,10 @@
 body {
-    background-image: linear-gradient(45deg, #333333, #222222);
+    background-color: #2e2e2e;
+    font-family: 'Nanum Gothic', sans-serif;
 }
 
 .image-sm {
-    height: 40px;
+    height: 30px;
 }
 
 .my-jumbotron {
@@ -15,8 +16,20 @@ body {
     background-color: rgb(24, 32, 51);
 }
 
+.bg-green {
+    background-color: rgb(18, 128, 113);
+}
+
 .bg-black {
     background-color: rgb(50, 50, 50);
+}
+
+.col-grey {
+    color: rgb(173, 173, 173);
+}
+
+.col-darkgrey {
+    color: rgb(102, 102, 102);
 }
 
 input {
@@ -35,11 +48,26 @@ input:focus {
     border: none !important;
 }
 
-button#submit {
+.orange {
     border: none !important;
     border-radius: 0 !important;
     background: #c56249 !important;
     font-size: 16px;
     padding-top: 13px !important;
     padding-bottom: 13px !important;
+}
+
+.field-var {
+    background-image: url('logo.png');
+    background-size: 100%;
+    background-color: transparent;
+    border: 0;
+    height: 100px;
+    width: 100px;
+    margin: 5px;
+    font-size: 20px;
+}
+
+.field-var:hover {
+    background-color: transparent;
 }

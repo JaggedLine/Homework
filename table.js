@@ -347,6 +347,13 @@ class Table
         }
     }
 
+    resize(xLength, yLength) {
+        let xsz = (xLength - this.node_radius * 2) / (this.sizeX - 1);
+        let ysz = (yLength - this.node_radius * 2) / (this.sizeY - 1);
+        this.sz = Math.min(xsz , ysz);
+        this.update_positions();
+    }
+
     lines_cnt() {
         return this.points.length - 1;
     }
@@ -433,7 +440,7 @@ class Table
         this.start_point = [Math.min(start_point[0], x - 1), Math.min(start_point[1], y - 1)];
         this.end_point = [Math.min(end_point[0], x - 1), Math.min(end_point[1], y - 1)];
         this.points = [this.start_point];
-        this.sizeX = x; this.sizeY = y;
+        this.sizeX = x*1; this.sizeY = y*1;
 
         this.busy = false;
 
@@ -573,14 +580,33 @@ function f_click_1(j, i, table)
     table.add_segment(j, i, table.draw_segment_animations.linear_animation);
 
     table.onwin = function(table) {
-    	data.setAttribute('score', table.lines_cnt());
-    	data.setAttribute('points', JSON.stringify(table.points));
-    	submit_score.innerHTML = table.lines_cnt();
-    	setTimeout(function() {
-    		alert('Your score '+table.lines_cnt());
-    		table.clear_table();
-    		table.win = false;
-    	}, 300)
+        setTimeout(function () {
+            alert(student_name.value + ', your score is ' + table.lines_cnt());
+
+            let tr = addElement(scores, 'tr');
+            addElement(tr, 'td', { 'text-align': 'center' }, { id: `game_${table.games_cnt}` }).innerHTML = table.games_cnt;
+            addElement(tr, 'td', {}, {}).innerHTML = student_name.value;
+            let td = addElement(tr, 'td', { 'text-align': 'center' }, {});
+            td.innerHTML = table.lines_cnt();
+            addElement(td, 'button',
+                {
+                    float: 'right',
+                    'background': 'white url(eye.png)',
+                    'background-size': '100%',
+                    width: '30px',
+                    height: '30px'
+                }, {
+                id: `show_path_${table.games_cnt++}`
+            });
+
+            document.getElementById('game_' + (table.games_cnt - 1)).setAttribute('jagged_line', JSON.stringify({ x: table.sizeX, y: table.sizeY, points: table.points }));
+            for (let i = 0; i < table.games_cnt; i++) {
+                document.getElementById('show_path_' + i).addEventListener('mousedown', function () { xxx = showPath(i); yyy = true; })
+            }
+            document.addEventListener('mouseup', function () { if (yyy) { hidePath(xxx); yyy = false } })
+            student_name.value = student_name.value == 'Vanyok' ? 'Feduk' : student_name.value == 'Feduk' ? 'Lesha' : 'Vanyok';
+            table.clear_table();
+        }, 300)
     }
 }
 
@@ -608,3 +634,4 @@ let Tbl = new Table(
 );
 
 Tbl.generate_table(6, 6, f_click_1, [2, 2], [4, 5]);
+Tbl.resize(315, 315);

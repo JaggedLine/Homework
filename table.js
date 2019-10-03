@@ -81,6 +81,8 @@ class Table
         this.grid_color = opt.grid_color || 'yellow';
         this.grid_width = opt.grid_width || 10;
 
+        this.background_color = opt.background_color || 'transparent';
+
         let table = this;
         this.draw_segment_animations = {
             no_animation: function (x1, y1, x2, y2) // real coordinates 
@@ -347,11 +349,18 @@ class Table
         }
     }
 
+    update_background() {
+        field.style.width = `${this.sz * (this.sizeX - 1) + this.node_radius * 2}px`;
+        field.style.height = `${this.sz * (this.sizeY - 1) + this.node_radius * 2}px`;
+        field.style.background = this.background_color;
+    }
+
     resize(xLength, yLength) {
         let xsz = (xLength - this.node_radius * 2) / (this.sizeX - 1);
         let ysz = (yLength - this.node_radius * 2) / (this.sizeY - 1);
         this.sz = Math.min(xsz , ysz);
         this.update_positions();
+        this.update_background();
     }
 
     lines_cnt() {
@@ -524,6 +533,7 @@ class Table
         }
         this.node(this.start_point[1], this.start_point[0]).style.background = this.start_node_color;
         this.node(this.end_point[1], this.end_point[0]).style.background = this.end_node_color;
+        this.update_background();
     }
 
     add_segment(x, y, animation_mode = this.draw_segment_animations.no_animation) {
@@ -557,59 +567,6 @@ class Table
     }
 }
 
-function f_click_1(j, i, table)
-{
-    let last_x = table.points[table.lines_cnt()][0];
-    let last_y = table.points[table.lines_cnt()][1];
-    len = table.lines_cnt();
-
-    if (table.destroy_segments(j, i, table.destroy_segment_animation.linear_animation)) { return; }
-
-    for (let n = 1; n <= len; ++n) {
-        if (segments_intersect(j, i, last_x, last_y, table.points[n - 1][0], table.points[n - 1][1], table.points[n][0], table.points[n][1])) {
-            // alert('Intersection!!');
-            return;
-        }
-    }
-
-    if ((i - last_y) ** 2 + (j - last_x) ** 2 - 5) {
-        // alert('Distance should be ~' + Math.sqrt(5) + '!');
-        return;
-    }
-
-    table.add_segment(j, i, table.draw_segment_animations.linear_animation);
-
-    table.onwin = function(table) {
-        setTimeout(function () {
-            alert(student_name.value + ', your score is ' + table.lines_cnt());
-
-            let tr = addElement(scores, 'tr');
-            addElement(tr, 'td', { 'text-align': 'center' }, { id: `game_${table.games_cnt}` }).innerHTML = table.games_cnt;
-            addElement(tr, 'td', {}, {}).innerHTML = student_name.value;
-            let td = addElement(tr, 'td', { 'text-align': 'center' }, {});
-            td.innerHTML = table.lines_cnt();
-            addElement(td, 'button',
-                {
-                    float: 'right',
-                    'background': 'white url(eye.png)',
-                    'background-size': '100%',
-                    width: '30px',
-                    height: '30px'
-                }, {
-                id: `show_path_${table.games_cnt++}`
-            });
-
-            document.getElementById('game_' + (table.games_cnt - 1)).setAttribute('jagged_line', JSON.stringify({ x: table.sizeX, y: table.sizeY, points: table.points }));
-            for (let i = 0; i < table.games_cnt; i++) {
-                document.getElementById('show_path_' + i).addEventListener('mousedown', function () { xxx = showPath(i); yyy = true; })
-            }
-            document.addEventListener('mouseup', function () { if (yyy) { hidePath(xxx); yyy = false } })
-            student_name.value = student_name.value == 'Vanyok' ? 'Feduk' : student_name.value == 'Feduk' ? 'Lesha' : 'Vanyok';
-            table.clear_table();
-        }, 300)
-    }
-}
-
 let yura_styles = {
     node_color: 'transparent',
     used_node_color: 'rgba(50, 50, 255, 0.9)',
@@ -626,7 +583,8 @@ let yura_styles = {
     node_border_color: 'transparent',
     used_node_border_color: 'black',
     used_node_color: 'white',
-    clickable_node_radius: 20
+    clickable_node_radius: 20,
+    background_color: '#fffefe'
 }
 
 let Tbl = new Table(

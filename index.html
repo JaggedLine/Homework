@@ -36,12 +36,12 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-6 d-flex align-items-center justify-content-center bg-black" style="background: url(picture.svg); background-size: 100%;">
+            <div class="col-md-6 bg-black geo-image">
                 <!--<img class="img-fluid" src="picture.svg" style="width: 110%;">-->
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 bg-darkblue">
+            <div class="col-lg-6 bg-darkblue">
                 <div class="jumbotron my-jumbotron">
                     <h2 class="text-light text-center">The longest polygonal chain</h2>
                     <br>
@@ -68,13 +68,17 @@
                     <button id="submit_button" class="btn-block btn-lg btn-dark orange">Your score is <span id="submit_score">0</span>. Submit it.</button>
                 </div>
             </div>
-            <div class="col-md-6 bg-darkblue">
-                <div id="field">
-                    <div id="grid"></div>
-                    <div id="segments"></div>
-                    <div id="nodes"></div>
+            <div class="col-lg-6 bg-darkblue">
+                <div class="jumbotron my-jumbotron d-flex">
+                    <div class="mx-auto my-auto">
+                        <div id="field">
+                            <div id="grid"></div>
+                            <div id="segments"></div>
+                            <div id="nodes"></div>
+                        </div>
+                        <div id="data" style="display: none;"></div>
+                    </div>
                 </div>
-                <div id="data" style="display: none;"></div>
             </div>
         </div>
         <div class="row">
@@ -86,6 +90,18 @@
             <div class="col-md-6 bg-green">
                 <div class="jumbotron my-jumbotron">
                     <h3 class="text-light">Leaderboards</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Mark</td>
+                                <td>228 points</td>
+                            </tr>
+                            <tr>
+                                <td>Maxim</td>
+                                <td>213 points</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

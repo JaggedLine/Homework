@@ -633,5 +633,5 @@ let Tbl = new Table(
     yura_styles
 );
 
-Tbl.generate_table(6, 6, f_click_1, [2, 2], [4, 5]);
-Tbl.resize(315, 315);
+Tbl.generate_table(8, 6, f_click_1, [2, 2], [4, 5]);
+Tbl.resize(350, 350);

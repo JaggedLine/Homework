@@ -78,7 +78,7 @@ input:focus {
 }
 
 
-/*table classes*/
+/*field classes*/
 
 .node {
     position: absolute;
@@ -95,6 +95,7 @@ input:focus {
 }
 
 #field {
+    /* border: 10px solid #fffefe; */
     position: relative;
     background: #fffefe;
     width: 350px;

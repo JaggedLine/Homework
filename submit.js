@@ -4,7 +4,7 @@ async function sendJSON() {
             method: 'post',
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
-                "Field-Size-X": "6",
+                "Field-Size-X": "8",
                 "Field-Size-Y": "6",
                 "Name": document.getElementById('name').value
             },

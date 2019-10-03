@@ -6,14 +6,22 @@ class SecurityError(Exception):
     def __init__(self, message):
         self.message = message
 
-def process(data: str) -> list:
-    return [(0, 0)]
+def process(data: str) -> tuple:
+    return ([(0, 0)], [0], [0])
 
-def clac(data: str) -> int:
-    line = process(data)
-    if len(set(line)) != len(line):
+def intersect(segment1: tuple, segment2: tuple) -> bool:
+    return True
+
+def clac(data: str, field_size: int) -> int:
+    line, x, y = process(data)
+    if (len(set(line)) != len(line)):
         raise SecurityError("STOP CHEATING! BAN!")
-    if 
+    if (max(y) >= field_size or min(y) < 0 or max(x) >= field_size or min(x) < 0):
+        raise SecurityError("STOP CHEATING! BAN!")
+    for i in range(1, len(line)):
+        for j in range(i+2, len(line)):
+            if (intersect((line[i-1], line[i]), (line[j-1], line[j]))):
+                raise SecurityError("STOP CHEATING! BAN!")
 
 def save_results(result: tuple, field_size: int) -> None:
     f = open("table_" + str(field_size) + ".json", 'a')

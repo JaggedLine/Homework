@@ -53,6 +53,8 @@ class Table
 
         this.id = opt.id === undefined ? 'main' : opt.id;
         this.sz = opt.sz || 60;
+        this.win = false;
+        this.onwin = function(table) {table.clear_table();}
 
         this.segment_height = opt.segment_height || 15;
         this.segment_color = opt.segment_color || 'green';
@@ -518,26 +520,33 @@ class Table
     }
 
     add_segment(x, y, animation_mode = this.draw_segment_animations.no_animation) {
-        let last_x = this.points[this.lines_cnt()][0];
-        let last_y = this.points[this.lines_cnt()][1];
-        animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
-        this.points.push([x, y]);
-        this.update_colors();
-        this.update_score();
+    	if (!this.win) {
+	        let last_x = this.points[this.lines_cnt()][0];
+	        let last_y = this.points[this.lines_cnt()][1];
+	        animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
+	        this.points.push([x, y]);
+	        this.update_colors();
+	        this.update_score();
+	        if (this.end_point[0] == x && this.end_point[1] == y) {
+	        	this.onwin(this);
+	        }
+	    }
 
     }
 
     destroy_segments(x, y, animation_mode = this.destroy_segment_animation.no_animation)
     {
-        for (let n = 0; n < this.lines_cnt(); ++n) {
-            if (x == this.points[n][0] && y == this.points[n][1]) {
-                animation_mode(this.lines_cnt() - n);
-                return true;
-            }
-        }
-        this.update_score();
-        this.update_colors();
-        return false;
+    	if (!this.win) {
+	        for (let n = 0; n < this.lines_cnt(); ++n) {
+	            if (x == this.points[n][0] && y == this.points[n][1]) {
+	                animation_mode(this.lines_cnt() - n);
+	                return true;
+	            }
+	        }
+	        this.update_score();
+	        this.update_colors();
+	        return false;
+	    }
     }
 }
 
@@ -563,70 +572,15 @@ function f_click_1(j, i, table)
 
     table.add_segment(j, i, table.draw_segment_animations.linear_animation);
 
-    if (i == table.end_point[1] && j == table.end_point[0]) {
-        setTimeout(function () {
-            alert(student_name.value + ', your score is ' + table.lines_cnt());
-
-            let tr = addElement(scores, 'tr');
-            addElement(tr, 'td', { 'text-align': 'center' }, { id: `game_${table.games_cnt}` }).innerHTML = table.games_cnt;
-            addElement(tr, 'td', {}, {}).innerHTML = student_name.value;
-            let td = addElement(tr, 'td', { 'text-align': 'center' }, {});
-            td.innerHTML = table.lines_cnt();
-            addElement(td, 'button',
-                {
-                    float: 'right',
-                    'background': 'white url(eye.png)',
-                    'background-size': '100%',
-                    width: '30px',
-                    height: '30px'
-                }, {
-                id: `show_path_${table.games_cnt++}`
-            });
-
-            document.getElementById('game_' + (table.games_cnt - 1)).setAttribute('jagged_line', JSON.stringify({ x: table.sizeX, y: table.sizeY, points: table.points }));
-            for (let i = 0; i < table.games_cnt; i++) {
-                document.getElementById('show_path_' + i).addEventListener('mousedown', function () { xxx = showPath(i); yyy = true; })
-            }
-            document.addEventListener('mouseup', function () { if (yyy) { hidePath(xxx); yyy = false } })
-            student_name.value = student_name.value == 'Vanyok' ? 'Feduk' : student_name.value == 'Feduk' ? 'Lesha' : 'Vanyok';
-            table.clear_table();
-        }, 300)
-    }
-}
-
-function f_click_2(j, i, table)
-{
-    let last_x = table.points[table.lines_cnt()][0];
-    let last_y = table.points[table.lines_cnt()][1];
-    len = table.lines_cnt();
-
-    if (table.destroy_segments(j, i, table.destroy_segment_animation.lesha_animation)) { return; }
-
-    for (let n = 1; n <= len; ++n) {
-        if (segments_intersect(j, i, last_x, last_y, table.points[n - 1][0], table.points[n - 1][1], table.points[n][0], table.points[n][1])) {
-            // alert('Intersection!!');
-            return;
-        }
-    }
-
-    n = table.points.length - 1;
-    if (n >= 1) {
-        let last_len = (table.points[n - 1][0] - table.points[n][0]) ** 2 + (table.points[n - 1][1] - table.points[n][1]) ** 2
-        if ((i - last_y) ** 2 + (j - last_x) ** 2 <= last_len) {
-            // alert('Distance should be >' + Math.sqrt(last_len) + '!');
-            return;
-        }
-    }
-
-    table.add_segment(j, i, table.draw_segment_animations.linear_animation);
-
-    if (j == table.end_point[1] && i == table.end_point[0]) {
-        setTimeout(function () {
-            alert(student_name.value + ', your score is ' + table.lines_cnt())
-            scores.innerHTML += '<tr><td style="text-align: center;">' + ++table.games_cnt + '</td><td>' + student_name.value + '</td><td>' + table.lines_cnt() + '</td></tr>';
-            student_name.value = student_name.value == 'Vanyok' ? 'Feduk' : student_name.value == 'Feduk' ? 'Lesha' : 'Vanyok';
-            table.clear_table();
-        }, 300);
+    table.onwin = function(table) {
+    	data.setAttribute('score', table.lines_cnt());
+    	data.setAttribute('points', JSON.stringify(table.points));
+    	submit_score.innerHTML = table.lines_cnt();
+    	setTimeout(function() {
+    		alert('Your score '+table.lines_cnt());
+    		table.clear_table();
+    		table.win = false;
+    	}, 300)
     }
 }
 

@@ -71,3 +71,33 @@ input:focus {
 .field-var:hover {
     background-color: transparent;
 }
+
+
+/*table classes*/
+
+.node {
+    position: absolute;
+    border-radius: 50%;
+    background-size: 100% !important;
+}
+
+.segment {
+    position: absolute;
+}
+
+.grid {
+    position: absolute;
+}
+
+#field {
+    position: absolute;
+    top: 80px;
+    left: 130px;
+    background: #fffefe;
+    width: 315px;
+    height: 315px;
+}
+
+#score {
+    display: none;
+}

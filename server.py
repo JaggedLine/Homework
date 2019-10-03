@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
+import json
 
 PORT_NUMBER = 5000
 
@@ -7,7 +8,11 @@ class SecurityError(Exception):
         self.message = message
 
 def process(data: str) -> tuple:
-    return ([(0, 0)], [0], [0])
+    line_bad = json.loads(data)
+    line = [(i[0], i[1]) for i in line_bad]
+    x = [i[0] for i in line_bad]
+    y = [i[1] for i in line_bad]
+    return (line, x, y)
 
 def vec_mul(a: tuple, b: tuple) -> tuple:
     return a[0] * b[1] - a[1] * b[0]
@@ -18,11 +23,11 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
     b = vec_mul((x4 - x3, y4 - y3), (x1 - x3, y1 - y3)) * vec_mul((x4 - x3, y4 - y3), (x2 - x3, y2 - y3))
     return (a <= 0 and b <= 0)
 
-def calc(data: str, field_size: int) -> int:
+def calc(data: str, field_size: tuple) -> int:
     line, x, y = process(data)
     if (len(set(line)) != len(line)):
         raise SecurityError("STOP CHEATING! BAN!")
-    if (max(y) >= field_size or min(y) < 0 or max(x) >= field_size or min(x) < 0):
+    if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
         raise SecurityError("STOP CHEATING! BAN!")
     for i in range(1, len(line)):
         for j in range(i+2, len(line)):
@@ -30,8 +35,8 @@ def calc(data: str, field_size: int) -> int:
                 raise SecurityError("STOP CHEATING! BAN!")
     return len(line) - 1
 
-def save_results(result: tuple, field_size: int) -> None:
-    f = open("table_" + str(field_size) + ".json", 'a')
+def save_results(result: tuple, field_size: tuple) -> None:
+    f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json", 'a')
     f.write(result[0] + ':' + str(result[1]) + ',')
     f.close()
 
@@ -78,11 +83,21 @@ class Handler(BaseHTTPRequestHandler):
         content_length = int(self.headers["Content-Length"])
         post_data = self.rfile.read(content_length).decode("utf8")
         print(post_data)
+        print(self.headers)
+        FORBID = ",;:.{}[]()\n\t"
+        for i in FORBID:
+            if (i in self.headers["Name"]):
+                #self.send_error(403, "Bad username. '" + FORBID + "' not allowed in username.")
+                self.send_response(200)
+                self.send_header("Content-type", "")
+                self.end_headers()
+                return
+        field_size = (int(self.headers["Field-Size-X"]), int(self.headers["Field-Size-Y"]))
         try:
-            result = calc(post_data, int(self.headers["Field-Size"]))
+            result = calc(post_data, field_size)
         except SecurityError as e:
             self.send_error(403, e.message)
-        # save_results((self.headers["Name"], result), int(self.headers["Field-Size"]))
+        save_results((self.headers["Name"], result), field_size)
         self.send_response(200)
         self.send_header("Content-type", "")
         self.end_headers()

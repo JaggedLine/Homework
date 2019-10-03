@@ -594,6 +594,8 @@ function f_click_1(j, i, table)
     table.onwin = function(table) {
     	data.setAttribute('score', table.lines_cnt());
     	data.setAttribute('points', JSON.stringify(table.points));
+        data.setAttribute('field_sizw_x', table.sizeX);
+        data.setAttribute('field_sizw_y', table.sizeY);
     	submit_score.innerHTML = table.lines_cnt();
     	setTimeout(function() {
     		alert('Your score '+table.lines_cnt());

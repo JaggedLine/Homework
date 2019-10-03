@@ -63,9 +63,9 @@
                     </div>
                     -->
                     <span id="score"></span>
-                    <input class="form-control" placeholder="Your name">
+                    <input id="name" class="form-control" placeholder="Your name">
                     <br>
-                    <button class="btn-block btn-lg btn-dark orange">Your score is <span id="">0</span>. Submit it.</button>
+                    <button id="submit_button" class="btn-block btn-lg btn-dark orange">Your score is <span id="submit_score">0</span>. Submit it.</button>
                 </div>
             </div>
             <div class="col-md-6 bg-darkblue">
@@ -74,6 +74,7 @@
                     <div id="segments"></div>
                     <div id="nodes"></div>
                 </div>
+                <div id="data" style="display: none;"></div>
             </div>
         </div>
         <div class="row">
@@ -91,6 +92,7 @@
     </div>
 
     <script src="table.js"></script>
+    <script src="submit.js"></script>
 </body>
 
 </html>

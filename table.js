@@ -567,6 +567,40 @@ class Table
     }
 }
 
+function f_click_1(j, i, table)
+{
+    let last_x = table.points[table.lines_cnt()][0];
+    let last_y = table.points[table.lines_cnt()][1];
+    len = table.lines_cnt();
+
+    if (table.destroy_segments(j, i, table.destroy_segment_animation.linear_animation)) { return; }
+
+    for (let n = 1; n <= len; ++n) {
+        if (segments_intersect(j, i, last_x, last_y, table.points[n - 1][0], table.points[n - 1][1], table.points[n][0], table.points[n][1])) {
+            // alert('Intersection!!');
+            return;
+        }
+    }
+
+    if ((i - last_y) ** 2 + (j - last_x) ** 2 - 5) {
+        // alert('Distance should be ~' + Math.sqrt(5) + '!');
+        return;
+    }
+
+    table.add_segment(j, i, table.draw_segment_animations.linear_animation);
+
+    table.onwin = function(table) {
+    	data.setAttribute('score', table.lines_cnt());
+    	data.setAttribute('points', JSON.stringify(table.points));
+    	submit_score.innerHTML = table.lines_cnt();
+    	setTimeout(function() {
+    		alert('Your score '+table.lines_cnt());
+    		table.clear_table();
+    		table.win = false;
+    	}, 300)
+    }
+}
+
 let yura_styles = {
     node_color: 'transparent',
     used_node_color: 'rgba(50, 50, 255, 0.9)',

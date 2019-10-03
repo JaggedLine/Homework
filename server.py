@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
-import json
+import json, os
 
 PORT_NUMBER = 5000
 
@@ -8,11 +8,14 @@ class SecurityError(Exception):
         self.message = message
 
 def process(data: str) -> tuple:
-    line_bad = json.loads(data)
+    ddict = json.loads(data)
+    print(ddict)
+    line_bad = ddict["points"]
+    name = ddict["name"]
     line = [(i[0], i[1]) for i in line_bad]
     x = [i[0] for i in line_bad]
     y = [i[1] for i in line_bad]
-    return (line, x, y)
+    return (name, (line, x, y))
 
 def vec_mul(a: tuple, b: tuple) -> tuple:
     return a[0] * b[1] - a[1] * b[0]
@@ -23,8 +26,8 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
     b = vec_mul((x4 - x3, y4 - y3), (x1 - x3, y1 - y3)) * vec_mul((x4 - x3, y4 - y3), (x2 - x3, y2 - y3))
     return (a <= 0 and b <= 0)
 
-def calc(data: str, field_size: tuple) -> int:
-    line, x, y = process(data)
+def calc(data: tuple, field_size: tuple) -> int:
+    line, x, y = data
     if (len(set(line)) != len(line)):
         raise SecurityError("STOP CHEATING! BAN!")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
@@ -36,18 +39,20 @@ def calc(data: str, field_size: tuple) -> int:
     return len(line) - 1
 
 def save_results(result: tuple, field_size: tuple) -> None:
-    a = dict()
-    try:
-        f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json")
-        a = json.load(f)
+    fname = "table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json"
+    if not os.path.isfile(fname):
+        f = open(fname, 'w', encoding="utf-8")
+        f.write("{}")
         f.close()
-    except FileNotFoundError:
-        pass
-    except json.decoder.JSONDecodeError:
-        pass
+
+    f = open(fname, encoding="utf-8")
+    a = json.load(f)
+    f.close()
+
     a[result[0]] = result[1]
-    f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json", 'w')
-    json.dump(a, f)
+
+    f = open(fname, 'w', encoding="utf-8")
+    json.dump(a, f, indent=4, ensure_ascii=False)
     f.close()
 
 class Handler(BaseHTTPRequestHandler):
@@ -91,12 +96,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
-        post_data = self.rfile.read(content_length).decode("utf8")
-        print(post_data)
-        print(self.headers)
+        name, data = process(self.rfile.read(content_length).decode("utf8"))
         FORBID = ",;:.{}[]()\n\t"
         for i in FORBID:
-            if (i in self.headers["Name"]):
+            if (i in name):
                 #self.send_error(403, "Bad username. '" + FORBID + "' not allowed in username.")
                 self.send_response(200)
                 self.send_header("Content-type", "")
@@ -104,11 +107,11 @@ class Handler(BaseHTTPRequestHandler):
                 return
         field_size = (int(self.headers["Field-Size-X"]), int(self.headers["Field-Size-Y"]))
         try:
-            result = calc(post_data, field_size)
+            result = calc(data, field_size)
         except SecurityError as e:
             self.send_error(403, e.message)
             return
-        save_results((self.headers["Name"], result), field_size)
+        save_results((name, result), field_size)
         self.send_response(200)
         self.send_header("Content-type", "")
         self.end_headers()

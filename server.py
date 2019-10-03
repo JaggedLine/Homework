@@ -26,15 +26,12 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
 def calc(data: str, field_size: tuple) -> int:
     line, x, y = process(data)
     if (len(set(line)) != len(line)):
-        print(1)
         raise SecurityError("STOP CHEATING! BAN!")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
-        print(2)
         raise SecurityError("STOP CHEATING! BAN!")
     for i in range(1, len(line)):
         for j in range(i+2, len(line)):
             if (intersect((line[i-1], line[i]), (line[j-1], line[j]))):
-                print(3)
                 raise SecurityError("STOP CHEATING! BAN!")
     return len(line) - 1
 

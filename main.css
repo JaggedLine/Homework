@@ -43,23 +43,36 @@ input {
     padding-bottom: 25px !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
-    font-size: 16px !important;
+    font-size: 16px;
     border: none !important;
 }
 
 input:focus {
     outline: none !important;
     box-shadow: none !important;
-    border: none !important;
 }
 
-.orange {
-    border: none !important;
-    border-radius: 0 !important;
-    background: #c85d31 !important;
+.btn-orange {
+    border: none;
+    border-radius: 0;
+    background-color: #c85d31;
     font-size: 16px;
-    padding-top: 13px !important;
-    padding-bottom: 13px !important;
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.btn-orange:hover {
+    background-color: #b85128 !important;
+    cursor: default;
+}
+
+.btn-orange:active {
+    background-color: #9e431f !important;
+}
+
+.btn-orange:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .field-var {
@@ -95,7 +108,6 @@ input:focus {
 }
 
 #field {
-    /* border: 10px solid #fffefe; */
     position: relative;
     background: #fffefe;
     width: 350px;

@@ -36,8 +36,12 @@ def calc(data: str, field_size: tuple) -> int:
     return len(line) - 1
 
 def save_results(result: tuple, field_size: tuple) -> None:
-    f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json", 'a')
-    f.write(result[0] + ':' + str(result[1]) + ',')
+    f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json")
+    a = json.loads(f.read())
+    a[result[0]] = result[1]
+    f.close()
+    f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json", 'w')
+    f.write(json.dumps(a))
     f.close()
 
 class Handler(BaseHTTPRequestHandler):

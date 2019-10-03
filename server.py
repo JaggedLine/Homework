@@ -36,15 +36,18 @@ def calc(data: str, field_size: tuple) -> int:
     return len(line) - 1
 
 def save_results(result: tuple, field_size: tuple) -> None:
+    a = dict()
     try:
         f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json")
-        a = json.loads(f.read())
-        a[result[0]] = result[1]
+        a = json.load(f)
         f.close()
     except FileNotFoundError:
         pass
+    except json.decoder.JSONDecodeError:
+        pass
+    a[result[0]] = result[1]
     f = open("table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json", 'w')
-    f.write(json.dumps(a))
+    json.dump(a, f)
     f.close()
 
 class Handler(BaseHTTPRequestHandler):

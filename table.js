@@ -81,6 +81,9 @@ class Table
         this.grid_color = opt.grid_color || 'yellow';
         this.grid_width = opt.grid_width || 10;
 
+        this.background_color = opt.background_color || 'transparent';
+        this.background_border = opt.background_border || 0;
+
         let table = this;
         this.draw_segment_animations = {
             no_animation: function (x1, y1, x2, y2) // real coordinates 
@@ -94,8 +97,8 @@ class Table
                         transform: `rotate(${ang}deg)`,
                         width: `${len}px`,
                         height: `${table.segment_height}px`,
-                        top: `${yc + table.node_radius - table.segment_height / 2}px`,
-                        left: `${xc - len / 2 + table.node_radius}px`,
+                        top: `${yc + table.node_radius - table.segment_height / 2 + table.background_border}px`,
+                        left: `${xc - len / 2 + table.node_radius + table.background_border}px`,
                         'border-radius': `${table.segment_height / 2}px`
                     },
                     {
@@ -126,8 +129,8 @@ class Table
                     let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
                     let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
                     segment.style.width = len + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + 'px';
-                    segment.style.left = (xc - len / 2 + table.node_radius) + 'px';
+                    segment.style.top = yc + table.node_radius - table.segment_height / 2  + table.background_border + 'px';
+                    segment.style.left = (xc - len / 2 + table.node_radius) + table.background_border + 'px';
                 }
                 timer(0);
             },
@@ -154,8 +157,8 @@ class Table
                     let len1 = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * 1;
                     let len2 = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
                     segment.style.width = len2 + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + 'px';
-                    segment.style.left = (xc - len1 / 2 + table.node_radius) + 'px';
+                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + table.background_border + 'px';
+                    segment.style.left = (xc - len1 / 2 + table.node_radius + table.background_border) + 'px';
                 }
                 timer(0);
             }
@@ -194,8 +197,8 @@ class Table
                     let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
                     let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
                     segment.style.width = len + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + 'px';
-                    segment.style.left = (xc - len / 2 + table.node_radius) + 'px';
+                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + table.background_border + 'px';
+                    segment.style.left = (xc - len / 2 + table.node_radius + table.background_border) + 'px';
                 }
                 timer(1);
             },
@@ -221,7 +224,7 @@ class Table
                     setTimeout(() => timer(t - 0.05 * (1 + Math.min(N - t, past + t))), 10);
                     let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
                     let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.width) * t;
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + 'px';
+                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + this.background_border + 'px';
                     segment.style.width = len + 'px';
                 }
                 timer(1);
@@ -295,8 +298,8 @@ class Table
                 let y_pos = i * this.sz, x_pos = j * this.sz;
                 setStyles(this.node(i, j),
                     {
-                        top: `${y_pos}px`,
-                        left: `${x_pos}px`
+                        top: `${y_pos + this.background_border}px`,
+                        left: `${x_pos + this.background_border}px`
                     });
             }
         }
@@ -305,8 +308,8 @@ class Table
                 let y_pos = i * this.sz, x_pos = j * this.sz;
                 setStyles(this.clicknode(i, j),
                     {
-                        top: `${y_pos - this.clickable_node_radius + this.node_radius}px`,
-                        left: `${x_pos - this.clickable_node_radius + this.node_radius}px`
+                        top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                        left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`
                     });
             }
         }
@@ -321,16 +324,16 @@ class Table
                     transform: `rotate(${ang}deg)`,
                     width: `${len}px`,
                     height: `${this.segment_height}px`,
-                    top: `${yc + this.node_radius - this.segment_height / 2}px`,
-                    left: `${xc - len / 2 + this.node_radius}px`,
+                    top: `${yc + this.node_radius - this.segment_height / 2 + this.background_border}px`,
+                    left: `${xc - len / 2 + this.node_radius + this.background_border}px`,
                 });
         }
         if (this.show_grid) {
             for (let i = 0; i < this.sizeY; ++i) {
                 setStyles(this.gridline('y', i),
                 {
-                    top: `${i * this.sz + this.node_radius - this.grid_width/2}px`,
-                    left: `${this.node_radius - this.grid_width/2}px`,
+                    top: `${i * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
+                    left: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     width: `${(this.sizeX - 1) * this.sz + this.grid_width}px`,
                     height: `${this.grid_width}px`
                 })  
@@ -338,8 +341,8 @@ class Table
             for (let j = 0; j < this.sizeX; ++j) {
                 setStyles(this.gridline('x', j), 
                 {
-                    left: `${j * this.sz + this.node_radius - this.grid_width/2}px`,
-                    top: `${this.node_radius - this.grid_width/2}px`,
+                    left: `${j * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
+                    top: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     height: `${(this.sizeY - 1) * this.sz + this.grid_width}px`,
                     width: `${this.grid_width}px`
                 })  
@@ -347,11 +350,19 @@ class Table
         }
     }
 
+    update_background() {
+        field.style.width = `${this.sz * (this.sizeX - 1) + this.node_radius * 2 + this.background_border * 2}px`;
+        field.style.height = `${this.sz * (this.sizeY - 1) + this.node_radius * 2 + this.background_border * 2}px`;
+        field.style.background = this.background_color;
+        field.style.border = `${this.background_border} solid ${this.background_color}`
+    }
+
     resize(xLength, yLength) {
         let xsz = (xLength - this.node_radius * 2) / (this.sizeX - 1);
         let ysz = (yLength - this.node_radius * 2) / (this.sizeY - 1);
         this.sz = Math.min(xsz , ysz);
         this.update_positions();
+        this.update_background();
     }
 
     lines_cnt() {
@@ -448,8 +459,8 @@ class Table
             for (let i = 0; i < y; ++i) {
                 addElement(grid, 'div', 
                 {
-                    top: `${i * this.sz + this.node_radius - this.grid_width/2}px`,
-                    left: `${this.node_radius - this.grid_width/2}px`,
+                    top: `${i * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
+                    left: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     background: this.grid_color,
                     width: `${(this.sizeX - 1) * this.sz + this.grid_width}px`,
                     height: `${this.grid_width}px`
@@ -461,8 +472,8 @@ class Table
             for (let j = 0; j < x; ++j) {
                 addElement(grid, 'div', 
                 {
-                    left: `${j * this.sz + this.node_radius - this.grid_width/2}px`,
-                    top: `${this.node_radius - this.grid_width/2}px`,
+                    left: `${j * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
+                    top: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     background: this.grid_color,
                     height: `${(this.sizeY - 1) * this.sz + this.grid_width}px`,
                     width: `${this.grid_width}px`
@@ -479,8 +490,8 @@ class Table
                 let y_pos = i * this.sz, x_pos = j * this.sz;
                 let node = addElement(nodes, 'div',
                     {
-                        top: `${y_pos}px`,
-                        left: `${x_pos}px`,
+                        top: `${y_pos + this.background_border}px`,
+                        left: `${x_pos + this.background_border}px`,
                         background: this.node_color,
                         width: `${(this.node_radius) * 2}px`,
                         height: `${(this.node_radius) * 2}px`,
@@ -496,8 +507,8 @@ class Table
                 let y_pos = i * this.sz, x_pos = j * this.sz;
                 let node = addElement(nodes, 'div',
                     {
-                        top: `${y_pos - this.clickable_node_radius + this.node_radius}px`,
-                        left: `${x_pos - this.clickable_node_radius + this.node_radius}px`,
+                        top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                        left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
                         background: 'transparent',
                         width: `${(this.clickable_node_radius) * 2}px`,
                         height: `${(this.clickable_node_radius) * 2}px`,
@@ -524,36 +535,37 @@ class Table
         }
         this.node(this.start_point[1], this.start_point[0]).style.background = this.start_node_color;
         this.node(this.end_point[1], this.end_point[0]).style.background = this.end_node_color;
+        this.update_background();
     }
 
     add_segment(x, y, animation_mode = this.draw_segment_animations.no_animation) {
-    	if (!this.win) {
-	        let last_x = this.points[this.lines_cnt()][0];
-	        let last_y = this.points[this.lines_cnt()][1];
-	        animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
-	        this.points.push([x, y]);
-	        this.update_colors();
-	        this.update_score();
-	        if (this.end_point[0] == x && this.end_point[1] == y) {
-	        	this.onwin(this);
-	        }
-	    }
+        if (!this.win) {
+            let last_x = this.points[this.lines_cnt()][0];
+            let last_y = this.points[this.lines_cnt()][1];
+            animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
+            this.points.push([x, y]);
+            this.update_colors();
+            this.update_score();
+            if (this.end_point[0] == x && this.end_point[1] == y) {
+                this.onwin(this);
+            }
+        }
 
     }
 
     destroy_segments(x, y, animation_mode = this.destroy_segment_animation.no_animation)
     {
-    	if (!this.win) {
-	        for (let n = 0; n < this.lines_cnt(); ++n) {
-	            if (x == this.points[n][0] && y == this.points[n][1]) {
-	                animation_mode(this.lines_cnt() - n);
-	                return true;
-	            }
-	        }
-	        this.update_score();
-	        this.update_colors();
-	        return false;
-	    }
+        if (!this.win) {
+            for (let n = 0; n < this.lines_cnt(); ++n) {
+                if (x == this.points[n][0] && y == this.points[n][1]) {
+                    animation_mode(this.lines_cnt() - n);
+                    return true;
+                }
+            }
+            this.update_score();
+            this.update_colors();
+            return false;
+        }
     }
 }
 
@@ -580,33 +592,16 @@ function f_click_1(j, i, table)
     table.add_segment(j, i, table.draw_segment_animations.linear_animation);
 
     table.onwin = function(table) {
-        setTimeout(function () {
-            alert(student_name.value + ', your score is ' + table.lines_cnt());
-
-            let tr = addElement(scores, 'tr');
-            addElement(tr, 'td', { 'text-align': 'center' }, { id: `game_${table.games_cnt}` }).innerHTML = table.games_cnt;
-            addElement(tr, 'td', {}, {}).innerHTML = student_name.value;
-            let td = addElement(tr, 'td', { 'text-align': 'center' }, {});
-            td.innerHTML = table.lines_cnt();
-            addElement(td, 'button',
-                {
-                    float: 'right',
-                    'background': 'white url(eye.png)',
-                    'background-size': '100%',
-                    width: '30px',
-                    height: '30px'
-                }, {
-                id: `show_path_${table.games_cnt++}`
-            });
-
-            document.getElementById('game_' + (table.games_cnt - 1)).setAttribute('jagged_line', JSON.stringify({ x: table.sizeX, y: table.sizeY, points: table.points }));
-            for (let i = 0; i < table.games_cnt; i++) {
-                document.getElementById('show_path_' + i).addEventListener('mousedown', function () { xxx = showPath(i); yyy = true; })
-            }
-            document.addEventListener('mouseup', function () { if (yyy) { hidePath(xxx); yyy = false } })
-            student_name.value = student_name.value == 'Vanyok' ? 'Feduk' : student_name.value == 'Feduk' ? 'Lesha' : 'Vanyok';
-            table.clear_table();
-        }, 300)
+    	data.setAttribute('score', table.lines_cnt());
+    	data.setAttribute('points', JSON.stringify(table.points));
+        data.setAttribute('field_size_x', table.sizeX);
+        data.setAttribute('field_size_y', table.sizeY);
+    	submit_score.innerHTML = table.lines_cnt();
+    	setTimeout(function() {
+    		alert('Your score '+table.lines_cnt());
+    		table.clear_table();
+    		table.win = false;
+    	}, 300)
     }
 }
 
@@ -626,12 +621,14 @@ let yura_styles = {
     node_border_color: 'transparent',
     used_node_border_color: 'black',
     used_node_color: 'white',
-    clickable_node_radius: 20
+    clickable_node_radius: 20,
+    background_color: '#fffefe',
+    background_border: 10
 }
 
 let Tbl = new Table(
     yura_styles
 );
 
-Tbl.generate_table(6, 6, f_click_1, [2, 2], [4, 5]);
-Tbl.resize(315, 315);
+Tbl.generate_table(8, 6, f_click_1, [2, 2], [4, 5]);
+Tbl.resize(350, 350);

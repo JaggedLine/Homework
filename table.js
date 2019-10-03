@@ -634,3 +634,4 @@ let Tbl = new Table(
 );
 
 Tbl.generate_table(6, 6, f_click_1, [2, 2], [4, 5]);
+Tbl.resize(315, 315);

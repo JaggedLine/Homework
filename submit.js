@@ -13,6 +13,7 @@ async function sendJSON() {
     };
     // console.log(send_object)
     let response = await fetch("/results.json", send_object)
+    update()
 }
 
 // console.log(document.getElementById('name'), document.getElementById('name')
@@ -21,4 +22,3 @@ submit_button.addEventListener('click', function() {
     // console.log('submit', document.getElementById('name').value); 
     sendJSON();
 });
-

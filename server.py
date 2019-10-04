@@ -48,8 +48,10 @@ def save_results(result: tuple, field_size: tuple) -> None:
     f = open(fname, encoding="utf-8")
     a = json.load(f)
     f.close()
-
-    a[result[0]] = result[1]
+    
+    if (not result[0] in a.keys()):
+        a[result[0]] = result[1]
+    a[result[0]] = max(a[result[0]], result[1])
 
     f = open(fname, 'w', encoding="utf-8")
     json.dump(a, f, indent=4, ensure_ascii=False)
@@ -99,7 +101,7 @@ class Handler(BaseHTTPRequestHandler):
         name, data = process(self.rfile.read(content_length).decode("utf8"))
         FORBID = ",;:.{}[]()\n\t"
         for i in FORBID:
-            if (i in name):
+            if (i in name or name == ""):
                 #self.send_error(403, "Bad username. '" + FORBID + "' not allowed in username.")
                 self.send_response(200)
                 self.send_header("Content-type", "")

@@ -592,16 +592,16 @@ function f_click_1(j, i, table)
     table.add_segment(j, i, table.draw_segment_animations.linear_animation);
 
     table.onwin = function(table) {
-    	data.setAttribute('score', table.lines_cnt());
-    	data.setAttribute('points', JSON.stringify(table.points));
+        data.setAttribute('score', table.lines_cnt());
+        data.setAttribute('points', JSON.stringify(table.points));
         data.setAttribute('field_size_x', table.sizeX);
         data.setAttribute('field_size_y', table.sizeY);
-    	submit_score.innerHTML = table.lines_cnt();
-    	setTimeout(function() {
-    		alert('Your score '+table.lines_cnt());
-    		table.clear_table();
-    		table.win = false;
-    	}, 300)
+        submit_score.innerHTML = table.lines_cnt();
+        setTimeout(function() {
+            //alert('Your score '+table.lines_cnt());TODO better
+            table.clear_table();
+            table.win = false;
+        }, 300)
     }
 }
 

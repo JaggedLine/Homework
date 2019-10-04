@@ -65,9 +65,11 @@
                     <!-- <span id="score"></span> -->
                     <input id="name" class="form-control" placeholder="Your name">
                     <br>
-                    <button id="submit_button" class="btn-block btn-lg btn-dark btn-orange">
-                        Your score is <span id="score">0</span>. Submit it.
+                    <button id="submit_button" class="btn-block btn-lg btn-dark btn-orange" disabled>
+                        Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
                     </button>
+                    <!-- <span class="text-danger" id="chain_error">Chain must end at the marked node</span> -->
+                    <span class="text-success" id="submit_success" hidden>Your chain was successfully submitted!</span>
                 </div>
             </div>
             <div class="col-lg-6 bg-darkblue">
@@ -99,6 +101,22 @@
                     <p>
                         <span class="fa fa-check-square text-success tick"></span>
                         Post a screenshot of your solution. Your account should be public so that we can see your post.
+                    </p>
+                    <p>
+                        <span class="fa fa-check-square text-success tick"></span>
+                        Add hashtags #euclidea and #euclidea_puzzle_8.
+                    </p>
+                    <p>
+                        <span class="fa fa-check-square text-success tick"></span>
+                        Mention @euclidea_app on the screenshot.
+                    </p>
+                    <p>
+                        <span class="fa fa-check-square text-success tick"></span>
+                        Write a kukarek why your answer is correct (optional).
+                    </p>
+                    <p>
+                        <span class="fa fa-check-square text-secondary tick"></span>
+                        You can also send us a message with solution in Direct, but publishing a post is better.
                     </p>
                 </div>
             </div>

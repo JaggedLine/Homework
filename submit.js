@@ -19,6 +19,10 @@ async function sendJSON() {
 // console.log(document.getElementById('name'), document.getElementById('name')
 //     .value);
 submit_button.addEventListener('click', function() {
-    // console.log('submit', document.getElementById('name').value); 
+    // console.log('submit', document.getElementById('name').value);
     sendJSON();
+    Tbl.clear_table();
+    // document.getElementById('chain_error').setAttribute('hidden', '');
+    document.getElementById('submit_success').removeAttribute('hidden');
+    setTimeout(() => document.getElementById('submit_success').setAttribute('hidden', ''), 3000);
 });

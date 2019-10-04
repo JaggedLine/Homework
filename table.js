@@ -54,7 +54,7 @@ class Table
         this.id = opt.id === undefined ? 'main' : opt.id;
         this.sz = opt.sz || 60;
         this.win = false;
-        this.onwin = function(table) {table.clear_table();}
+        // this.onwin = function(table) {table.clear_table();}
 
         this.segment_height = opt.segment_height || 15;
         this.segment_color = opt.segment_color || 'green';
@@ -180,6 +180,7 @@ class Table
                 function timer(t) {
                     if (t == 1) {
                         table.points.pop();
+                        table.onchange();
                         table.update_colors();
                     } 
                     if (t <= 0) {
@@ -212,6 +213,7 @@ class Table
                     if (t <= 0) {
                         segments.removeChild(table.segment(table.lines_cnt() - 1));
                         table.points.pop();
+                        table.onchange();
                         table.update_score();
                         this.update_colors();
                         if (N > 1) {
@@ -398,6 +400,7 @@ class Table
             segments.removeChild(child);
         }
         this.points = [this.start_point];
+        this.onchange();
         this.update_score();
         this.update_colors();
     }
@@ -451,6 +454,7 @@ class Table
         this.start_point = [Math.min(start_point[0], x - 1), Math.min(start_point[1], y - 1)];
         this.end_point = [Math.min(end_point[0], x - 1), Math.min(end_point[1], y - 1)];
         this.points = [this.start_point];
+        this.onchange();
         this.sizeX = x*1; this.sizeY = y*1;
 
         this.busy = false;
@@ -539,33 +543,57 @@ class Table
     }
 
     add_segment(x, y, animation_mode = this.draw_segment_animations.no_animation) {
-        if (!this.win) {
-            let last_x = this.points[this.lines_cnt()][0];
-            let last_y = this.points[this.lines_cnt()][1];
-            animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
-            this.points.push([x, y]);
-            this.update_colors();
-            this.update_score();
-            if (this.end_point[0] == x && this.end_point[1] == y) {
-                this.onwin(this);
-            }
+        let last_x = this.points[this.lines_cnt()][0];
+        let last_y = this.points[this.lines_cnt()][1];
+        animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
+        this.points.push([x, y]);
+        this.onchange();
+        this.update_colors();
+        this.update_score();
+        if (this.end_point[0] == x && this.end_point[1] == y) {
+            // this.onwin(this);
+            this.win = true;
         }
-
+        else {
+            this.win = false;
+        }
     }
 
     destroy_segments(x, y, animation_mode = this.destroy_segment_animation.no_animation)
     {
-        if (!this.win) {
-            for (let n = 0; n < this.lines_cnt(); ++n) {
-                if (x == this.points[n][0] && y == this.points[n][1]) {
-                    animation_mode(this.lines_cnt() - n);
-                    return true;
-                }
+        for (let n = 0; n < this.lines_cnt(); ++n) {
+            if (x == this.points[n][0] && y == this.points[n][1]) {
+                animation_mode(this.lines_cnt() - n);
+                return true;
             }
-            this.update_score();
-            this.update_colors();
-            return false;
         }
+        this.update_score();
+        this.update_colors();
+        return false;
+    }
+
+    onchange() {
+        let last_point = this.points[this.points.length - 1];
+        if (this.end_point[0] == last_point[0] && this.end_point[1] == last_point[1]) {
+            this.win = true;
+        }
+        else {
+            this.win = false;
+        }
+        if (!this.win) {
+            document.getElementById('submit_button').setAttribute('disabled', '');
+            // document.getElementById('chain_error').removeAttribute('hidden');
+            document.getElementById('submit_it').setAttribute('hidden', '');
+        }
+        else {
+            document.getElementById('submit_button').removeAttribute('disabled');
+            // document.getElementById('chain_error').setAttribute('hidden', '');
+            document.getElementById('submit_it').removeAttribute('hidden');
+        }
+        data.setAttribute('score', this.lines_cnt());
+        data.setAttribute('points', JSON.stringify(this.points));
+        data.setAttribute('field_size_x', this.sizeX);
+        data.setAttribute('field_size_y', this.sizeY);
     }
 }
 
@@ -575,7 +603,9 @@ function f_click_1(j, i, table)
     let last_y = table.points[table.lines_cnt()][1];
     len = table.lines_cnt();
 
-    if (table.destroy_segments(j, i, table.destroy_segment_animation.linear_animation)) { return; }
+    if (table.destroy_segments(j, i, table.destroy_segment_animation.linear_animation)) {
+        return;
+    }
 
     for (let n = 1; n <= len; ++n) {
         if (segments_intersect(j, i, last_x, last_y, table.points[n - 1][0], table.points[n - 1][1], table.points[n][0], table.points[n][1])) {
@@ -591,18 +621,19 @@ function f_click_1(j, i, table)
 
     table.add_segment(j, i, table.draw_segment_animations.linear_animation);
 
-    table.onwin = function(table) {
-        data.setAttribute('score', table.lines_cnt());
-        data.setAttribute('points', JSON.stringify(table.points));
-        data.setAttribute('field_size_x', table.sizeX);
-        data.setAttribute('field_size_y', table.sizeY);
-        // submit_score.innerHTML = table.lines_cnt();
-        // setTimeout(function() {
-        //     //alert('Your score '+table.lines_cnt());TODO better
-        //     table.clear_table();
-        //     table.win = false;
-        // }, 300)
-    }
+    // table.onwin = function(table) {
+    //     data.setAttribute('score', table.lines_cnt());
+    //     data.setAttribute('points', JSON.stringify(table.points));
+    //     data.setAttribute('field_size_x', table.sizeX);
+    //     data.setAttribute('field_size_y', table.sizeY);
+    //     document.getElementById('submit_button').setAttribute('disabled', false);
+    //     // submit_score.innerHTML = table.lines_cnt();
+    //     // setTimeout(function() {
+    //     //     //alert('Your score '+table.lines_cnt());TODO better
+    //     //     table.clear_table();
+    //     //     table.win = false;
+    //     // }, 300)
+    // }
 }
 
 let yura_styles = {
@@ -630,5 +661,5 @@ let Tbl = new Table(
     yura_styles
 );
 
-Tbl.generate_table(8, 6, f_click_1, [2, 2], [4, 5]);
+Tbl.generate_table(7, 7, f_click_1, [3, 3], [4, 6]);
 Tbl.resize(350, 350);

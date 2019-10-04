@@ -6,8 +6,10 @@ function update_table(scores) {
             document.getElementById('n'+i).innerHTML = "Nobody";
             document.getElementById('s'+i).innerHTML = "---";
         }
-        document.getElementById('n'+i).innerHTML = scores[i-1][0];
-        document.getElementById('s'+i).innerHTML = scores[i-1][1];
+        else {
+            document.getElementById('n'+i).innerHTML = scores[i-1][0];
+            document.getElementById('s'+i).innerHTML = scores[i-1][1];
+        }
     }
     return;
 }
@@ -23,7 +25,7 @@ async function update() {
     };
     url = "table_" + field_size.x_size + '_' + field_size.y_size + ".json";
     response = await fetch(url);
-    console.log(url)
+    // console.log(url)
     if (!response.ok) {
         return;
     }
@@ -34,7 +36,7 @@ async function update() {
         scores[scores.length] = pair;
     }
     scores.sort(comp);
-    console.log(scores);
+    // console.log(scores);
     update_table(scores);
     return;
 }

@@ -61,18 +61,23 @@ input:focus {
     padding-bottom: 13px;
 }
 
-.btn-orange:hover {
+.btn-orange:hover:enabled {
     background-color: #b85128 !important;
     cursor: default;
 }
 
-.btn-orange:active {
+.btn-orange:active:enabled {
     background-color: #9e431f !important;
 }
 
-.btn-orange:focus {
+.btn-orange:focus:enabled {
     outline: none !important;
     box-shadow: none !important;
+}
+
+.btn-orange:disabled {
+    background-color: #642e15;
+    color: #888888;
 }
 
 .field-var {

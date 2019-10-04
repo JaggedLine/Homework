@@ -28,7 +28,7 @@ function addElement(parent, tag, style, opt)
     }
     let styleText = '';
     for (let prop in style) {
-        styleText += ' ' + prop + ': ' + style[prop] + ';'
+        styleText += ` ${prop}: ${style[prop]};`;
     }
     elem.style.cssText = styleText;
     parent.append(elem);
@@ -40,7 +40,6 @@ function setStyles(elem, style) {
         elem.style[prop] = style[prop]
     }
 }
-
 
 class Table
 {
@@ -54,7 +53,6 @@ class Table
         this.id = opt.id === undefined ? 'main' : opt.id;
         this.sz = opt.sz || 60;
         this.win = false;
-        // this.onwin = function(table) {table.clear_table();}
 
         this.segment_height = opt.segment_height || 15;
         this.segment_color = opt.segment_color || 'green';
@@ -76,163 +74,12 @@ class Table
         this.delete_segment_color = opt.delete_segment_color || this.segment_color;
 
         this.show_score = opt.show_score === undefined ? true : opt.show_score;
-
         this.show_grid = opt.show_grid === undefined ? false : opt.show_grid;
         this.grid_color = opt.grid_color || 'yellow';
         this.grid_width = opt.grid_width || 10;
 
         this.background_color = opt.background_color || 'transparent';
         this.background_border = opt.background_border || 0;
-
-        let table = this;
-        this.draw_segment_animations = {
-            no_animation: function (x1, y1, x2, y2) // real coordinates 
-            {
-                let xc = (x1 + x2) / 2, yc = (y1 + y2) / 2;
-                let len = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height;
-                let ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-                addElement(segments, 'div',
-                    {
-                        background: table.segment_color,
-                        transform: `rotate(${ang}deg)`,
-                        width: `${len}px`,
-                        height: `${table.segment_height}px`,
-                        top: `${yc + table.node_radius - table.segment_height / 2 + table.background_border}px`,
-                        left: `${xc - len / 2 + table.node_radius + table.background_border}px`,
-                        'border-radius': `${table.segment_height / 2}px`
-                    },
-                    {
-                        id: `segment_${table.id}_${table.lines_cnt()}`,
-                        class: `segment`
-                    });
-            },
-            linear_animation: function (x1, y1, x2, y2) {
-                table.busy = true;
-                let ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-                let segment = addElement(segments, 'div',
-                    {
-                        background: table.segment_color,
-                        transform: 'rotate(' + ang + 'deg)',
-                        height: `${table.segment_height}px`,
-                        'border-radius': `${table.segment_height / 2}px`
-                    }, {
-                    id: 'segment_' + table.id + '_' + table.lines_cnt(),
-                    class: 'segment'
-                });
-
-                function timer(t) {
-                    if (t >= 1.05) {
-                        table.busy = false;
-                        return;
-                    }
-                    setTimeout(() => timer(t + 0.1), 20);
-                    let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
-                    let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
-                    segment.style.width = len + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2  + table.background_border + 'px';
-                    segment.style.left = (xc - len / 2 + table.node_radius) + table.background_border + 'px';
-                }
-                timer(0);
-            },
-            lesha_animation: function (x1, y1, x2, y2) {
-                table.busy = true;
-                let ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-                let segment = addElement(segments, 'div',
-                    {
-                        background: table.segment_color,
-                        transform: 'rotate(' + ang + 'deg)',
-                        height: table.segment_height
-                    }, {
-                    id: 'segment_' + table.id + '_' + table.lines_cnt(),
-                    class: 'segment'
-                });
-
-                function timer(t) {
-                    if (t >= 1.05) {
-                        table.busy = false;
-                        return;
-                    }
-                    setTimeout(() => timer(t + 0.05), 10);
-                    let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
-                    let len1 = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * 1;
-                    let len2 = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
-                    segment.style.width = len2 + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + table.background_border + 'px';
-                    segment.style.left = (xc - len1 / 2 + table.node_radius + table.background_border) + 'px';
-                }
-                timer(0);
-            }
-        };
-
-        this.destroy_segment_animation = {
-            no_animation: function (N) {
-                segments.removeChild(table.segment(table.lines_cnt() - 1));
-                table.update_score();
-                table.update_colors();
-                if (N > 1) { table.destroy_segment_animation.no_animation(N - 1); }
-            },
-            linear_animation: function (N, past = 0) {
-                table.busy = true;
-                let segment = table.segment((table.lines_cnt() - 1));
-                let x2 = table.points[table.lines_cnt()][0] * table.sz, y2 = table.points[table.lines_cnt()][1] * table.sz;
-                let x1 = table.points[table.lines_cnt() - 1][0] * table.sz, y1 = table.points[table.lines_cnt() - 1][1] * table.sz;
-
-                function timer(t) {
-                    if (t == 1) {
-                        table.points.pop();
-                        table.onchange();
-                        table.update_colors();
-                    } 
-                    if (t <= 0) {
-                        segments.removeChild(table.segment(table.lines_cnt()));
-                        table.update_score();
-                        table.update_colors();
-                        if (N > 1) {
-                            table.destroy_segment_animation.linear_animation(N - 1, past + 1);
-                        } else {
-                            table.busy = false;
-                        }
-                        return;
-                    }
-                    setTimeout(() => timer(t - 0.1 * (1 + Math.min(N - t, past + t))), 20);
-                    let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
-                    let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.segment_height) * t;
-                    segment.style.width = len + 'px';
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + table.background_border + 'px';
-                    segment.style.left = (xc - len / 2 + table.node_radius + table.background_border) + 'px';
-                }
-                timer(1);
-            },
-            lesha_animation: function (N, past = 0) {
-                table.busy = true;
-                let segment = table.segment((table.lines_cnt() - 1));
-                let x2 = table.points[table.lines_cnt()][0] * table.sz, y2 = table.points[table.lines_cnt()][1] * table.sz;
-                let x1 = table.points[table.lines_cnt() - 1][0] * table.sz, y1 = table.points[table.lines_cnt() - 1][1] * table.sz;
-
-                function timer(t) {
-                    if (t <= 0) {
-                        segments.removeChild(table.segment(table.lines_cnt() - 1));
-                        table.points.pop();
-                        table.onchange();
-                        table.update_score();
-                        this.update_colors();
-                        if (N > 1) {
-                            table.destroy_segment_animation.lesha_animation(N - 1, past + 1);
-                        } else {
-                            table.busy = false;
-                        }
-                        return;
-                    }
-                    setTimeout(() => timer(t - 0.05 * (1 + Math.min(N - t, past + t))), 10);
-                    let xc = x1 * (1 - t) + ((x1 + x2) / 2) * t, yc = y1 * (1 - t) + ((y1 + y2) / 2) * t;
-                    let len = (Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + table.width) * t;
-                    segment.style.top = yc + table.node_radius - table.segment_height / 2 + this.background_border + 'px';
-                    segment.style.width = len + 'px';
-                }
-                timer(1);
-            },
-
-        };
     }
 
     make_busy() {
@@ -244,19 +91,19 @@ class Table
     }
 
     segment(n) {
-        return document.getElementById('segment_' + this.id + '_' + n);
+        return document.getElementById(`segment_${this.id}_${n}`);
     }
 
     node(x, y) {
-        return document.getElementById('node_' + this.id + '_' + x + '_' + y);
+        return document.getElementById(`node_${this.id}_${x}_${y}`);
     }
 
     clicknode(x, y) {
-        return document.getElementById('clicknode_' + this.id + '_' + x + '_' + y);
+        return document.getElementById(`clicknode_${this.id}_${x}_${y}`);
     }
 
     gridline(dir, x) {
-        return document.getElementById('gridline_' + this.id + '_' + dir + x);
+        return document.getElementById(`gridline_${this.id}_${dir}${x}`);
     }
 
     update_colors()
@@ -278,9 +125,11 @@ class Table
             let n = this.find_node(this.covered_node[0], this.covered_node[1]);
             if (n != this.points.length - 1) {
                 let x = this.covered_node[0], y = this.covered_node[1];
+                // console.log(x, y, n);
                 if (n == -1) {
                     this.node(y, x).style.background = this.hover_node_color;
-                } else {
+                }
+                else {
                     n++;
                     this.node(y, x).style.background = this.first_delete_node_color;
                     for (; n < this.points.length; n++) {
@@ -290,64 +139,69 @@ class Table
                 }
             }
         }
-        if (this.start_point) { this.node(this.start_point[1], this.start_point[0]).style.background = this.start_node_color };
-        if (this.end_point) { this.node(this.end_point[1], this.end_point[0]).style.background = this.end_node_color };
+        if (this.start_point) {
+            this.node(this.start_point[1], this.start_point[0]).style.background = this.start_node_color;
+        }
+        if (this.end_point) {
+            this.node(this.end_point[1], this.end_point[0]).style.background = this.end_node_color;
+        }
     }
 
-    update_positions () {
+    update_positions()
+    {
         for (let i = 0; i < this.sizeY; ++i) {
             for (let j = 0; j < this.sizeX; ++j) {
                 let y_pos = i * this.sz, x_pos = j * this.sz;
-                setStyles(this.node(i, j),
-                    {
-                        top: `${y_pos + this.background_border}px`,
-                        left: `${x_pos + this.background_border}px`
-                    });
+                let styleObject = {
+                    top: `${y_pos + this.background_border}px`,
+                    left: `${x_pos + this.background_border}px`,
+                };
+                setStyles(this.node(i, j), styleObject);
             }
         }
         for (let i = 0; i < this.sizeY; ++i) {
             for (let j = 0; j < this.sizeX; ++j) {
                 let y_pos = i * this.sz, x_pos = j * this.sz;
-                setStyles(this.clicknode(i, j),
-                    {
-                        top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
-                        left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`
-                    });
+                let styleObject = {
+                    top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                    left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                };
+                setStyles(this.clicknode(i, j), styleObject);
             }
         }
         for (let n = 0; n < this.lines_cnt(); ++n) {
-            let x1 = this.points[n][0]*this.sz, y1 = this.points[n][1]*this.sz;
-            let x2 = this.points[n + 1][0]*this.sz, y2 = this.points[n + 1][1]*this.sz; 
+            let x1 = this.points[n][0] * this.sz, y1 = this.points[n][1] * this.sz;
+            let x2 = this.points[n + 1][0] * this.sz, y2 = this.points[n + 1][1] * this.sz; 
             let xc = (x1 + x2) / 2, yc = (y1 + y2) / 2;
             let len = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) + this.segment_height;
             let ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-            setStyles(this.segment(n),
-                {
-                    transform: `rotate(${ang}deg)`,
-                    width: `${len}px`,
-                    height: `${this.segment_height}px`,
-                    top: `${yc + this.node_radius - this.segment_height / 2 + this.background_border}px`,
-                    left: `${xc - len / 2 + this.node_radius + this.background_border}px`,
-                });
+            let styleObject = {
+                transform: `rotate(${ang}deg)`,
+                width: `${len}px`,
+                height: `${this.segment_height}px`,
+                top: `${yc + this.node_radius - this.segment_height / 2 + this.background_border}px`,
+                left: `${xc - len / 2 + this.node_radius + this.background_border}px`,
+            };
+            setStyles(this.segment(n), styleObject);
         }
         if (this.show_grid) {
             for (let i = 0; i < this.sizeY; ++i) {
-                setStyles(this.gridline('y', i),
-                {
+                let styleObject = {
                     top: `${i * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
                     left: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     width: `${(this.sizeX - 1) * this.sz + this.grid_width}px`,
-                    height: `${this.grid_width}px`
-                })  
+                    height: `${this.grid_width}px`,
+                };
+                setStyles(this.gridline('y', i), styleObject);
             }
             for (let j = 0; j < this.sizeX; ++j) {
-                setStyles(this.gridline('x', j), 
-                {
+                let styleObject = {
                     left: `${j * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
                     top: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     height: `${(this.sizeY - 1) * this.sz + this.grid_width}px`,
-                    width: `${this.grid_width}px`
-                })  
+                    width: `${this.grid_width}px`,
+                };
+                setStyles(this.gridline('x', j), styleObject);  
             }
         }
     }
@@ -356,7 +210,7 @@ class Table
         field.style.width = `${this.sz * (this.sizeX - 1) + this.node_radius * 2 + this.background_border * 2}px`;
         field.style.height = `${this.sz * (this.sizeY - 1) + this.node_radius * 2 + this.background_border * 2}px`;
         field.style.background = this.background_color;
-        field.style.border = `${this.background_border} solid ${this.background_color}`
+        field.style.border = `${this.background_border} solid ${this.background_color}`;
     }
 
     resize(xLength, yLength) {
@@ -388,182 +242,196 @@ class Table
         return -1;
     }
 
-    clear_table()
+    clear_segments()
     {
         let for_delete = [];
         for (let child of segments.children) {
-            if (child.getAttribute('id').startsWith('segment_' + this.id + '_')) {
-                for_delete.push(child)
+            if (child.getAttribute('id').startsWith(`segment_${this.id}_`)) {
+                for_delete.push(child);
             }
         }
         for (let child of for_delete) {
             segments.removeChild(child);
         }
+    }
+
+    clear_nodes()
+    {
+        let for_delete = []
+        for (let child of nodes.children) {
+            if (child.getAttribute('id').startsWith(`node_${this.id}_`) || 
+                child.getAttribute('id').startsWith(`clicknode_${this.id}_`)) {
+                for_delete.push(child);
+            }
+        }
+        for (let child of for_delete) {
+            nodes.removeChild(child);
+        }
+    }
+
+    clear_grid()
+    {
+        let for_delete = []
+        for (let child of grid.children) {
+            if (child.getAttribute('id').startsWith(`gridline_${this.id}_`)) {
+                for_delete.push(child);
+            }
+        }
+        for (let child of for_delete) {
+            grid.removeChild(child);
+        }
+    }
+
+    clear_table()
+    {
+        this.clear_segments();
         this.points = [this.start_point];
         this.onchange();
         this.update_score();
         this.update_colors();
     }
 
-    delete_table()
+    f_click(j, i)
     {
-        this.clear_table();
-        let for_delete = []
-        for (let child of nodes.children) {
-            if (child.getAttribute('id').startsWith('node_' + this.id + '_')) {
-                for_delete.push(child)
+        let last_x = this.points[this.lines_cnt()][0];
+        let last_y = this.points[this.lines_cnt()][1];
+        let len = this.lines_cnt();
+        if (this.destroy_segments(j, i, destroyLinearAnimation)) {
+            return;
+        }
+        for (let n = 1; n <= len; ++n) {
+            if (segments_intersect(j, i, last_x, last_y,
+                this.points[n - 1][0], this.points[n - 1][1], this.points[n][0], this.points[n][1])) {
+                return;
             }
         }
-        for (let child of for_delete) {
-            nodes.removeChild(child);
+        if ((i - last_y) ** 2 + (j - last_x) ** 2 - 5) {
+            // alert('Distance should be ~' + Math.sqrt(5) + '!');
+            return;
         }
-
+        this.add_segment(j, i, drawLinearAnimation);
     }
 
-    generate_table(x, y, f_click = f_click_1, start_point = [0, 0], end_point = [x - 1, y - 1])
+    generate_table(x, y, start_point = [0, 0], end_point = [x - 1, y - 1])
     {
-        let for_delete = [];
-        for (let child of segments.children) {
-            if (child.getAttribute('id').startsWith('segment_' + this.id + '_')) {
-                for_delete.push(child)
-            }
-        }
-        for (let child of for_delete) {
-            segments.removeChild(child);
-        }
-        for_delete = []
-        for (let child of nodes.children) {
-            if (child.getAttribute('id').startsWith('node_' + this.id + '_') || 
-                child.getAttribute('id').startsWith('clicknode_' + this.id + '_')) {
-                for_delete.push(child)
-            }
-        }
-        for (let child of for_delete) {
-            nodes.removeChild(child);
-        }
-        for_delete = []
-        for (let child of grid.children) {
-            if (child.getAttribute('id').startsWith('gridline_' + this.id + '_')) {
-                for_delete.push(child)
-            }
-        }
-        for (let child of for_delete) {
-            grid.removeChild(child);
-        }
-
         this.start_point = [Math.min(start_point[0], x - 1), Math.min(start_point[1], y - 1)];
         this.end_point = [Math.min(end_point[0], x - 1), Math.min(end_point[1], y - 1)];
         this.points = [this.start_point];
-        this.onchange();
         this.sizeX = x*1; this.sizeY = y*1;
-
         this.busy = false;
+        let table = this;
 
         if (this.show_grid) {
             for (let i = 0; i < y; ++i) {
-                addElement(grid, 'div', 
-                {
+                let styleObject = {
                     top: `${i * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
                     left: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     background: this.grid_color,
                     width: `${(this.sizeX - 1) * this.sz + this.grid_width}px`,
-                    height: `${this.grid_width}px`
-                }, {
+                    height: `${this.grid_width}px`,
+                };
+                let optObject = {
                     id: `gridline_${this.id}_y${i}`,
-                    class: 'grid'
-                })  
+                    class: `grid`,
+                };
+                addElement(grid, 'div', styleObject, optObject);  
             }
             for (let j = 0; j < x; ++j) {
-                addElement(grid, 'div', 
-                {
+                let styleObject = {
                     left: `${j * this.sz + this.node_radius - this.grid_width/2 + this.background_border}px`,
                     top: `${this.node_radius - this.grid_width/2 + this.background_border}px`,
                     background: this.grid_color,
                     height: `${(this.sizeY - 1) * this.sz + this.grid_width}px`,
-                    width: `${this.grid_width}px`
-                }, {
+                    width: `${this.grid_width}px`,
+                };
+                let optObject = {
                     id: `gridline_${this.id}_x${j}`,
-                    class: 'grid'
-                })  
+                    class: `grid`,
+                };
+                addElement(grid, 'div', styleObject, optObject);  
             }
         }
-
 
         for (let i = 0; i < y; ++i) {
             for (let j = 0; j < x; ++j) {
                 let y_pos = i * this.sz, x_pos = j * this.sz;
-                let node = addElement(nodes, 'div',
-                    {
-                        top: `${y_pos + this.background_border}px`,
-                        left: `${x_pos + this.background_border}px`,
-                        background: this.node_color,
-                        width: `${(this.node_radius) * 2}px`,
-                        height: `${(this.node_radius) * 2}px`,
-                        border: `${this.node_border_radius}px solid ${this.node_border_color}`
-                    }, {
-                        id: `node_${this.id}_${i}_${j}`,
-                        class: 'node'
-                    });
+                let styleObject = {
+                    top: `${y_pos + this.background_border}px`,
+                    left: `${x_pos + this.background_border}px`,
+                    background: this.node_color,
+                    width: `${(this.node_radius) * 2}px`,
+                    height: `${(this.node_radius) * 2}px`,
+                    border: `${this.node_border_radius}px solid ${this.node_border_color}`,
+                };
+                let optObject = {
+                    id: `node_${this.id}_${i}_${j}`,
+                    class: `node`,
+                };
+                addElement(nodes, 'div', styleObject, optObject);
             }
         }
+
         for (let i = 0; i < y; ++i) {
             for (let j = 0; j < x; ++j) {
                 let y_pos = i * this.sz, x_pos = j * this.sz;
-                let node = addElement(nodes, 'div',
-                    {
-                        top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
-                        left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
-                        background: 'transparent',
-                        width: `${(this.clickable_node_radius) * 2}px`,
-                        height: `${(this.clickable_node_radius) * 2}px`,
-                    }, {
-                        id: `clicknode_${this.id}_${i}_${j}`,
-                        class: 'node'
-                    });
-                let table = this;
+                let styleObject = {
+                    top: `${y_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                    left: `${x_pos - this.clickable_node_radius + this.node_radius + this.background_border}px`,
+                    background: 'transparent',
+                    width: `${(this.clickable_node_radius) * 2}px`,
+                    height: `${(this.clickable_node_radius) * 2}px`,
+                };
+                let optObject = {
+                    id: `clicknode_${this.id}_${i}_${j}`,
+                    class: `node`,
+                };
+                let node = addElement(nodes, 'div', styleObject, optObject);
                 node.onmouseover = function () {
                     if (!table.busy) {
                         table.covered_node = [j, i];
                         table.update_colors();
                     }
                 };
-                node.onmouseout = function () { table.covered_node = 0; table.update_colors() };
-                // nodes.innerHTML += '<div id="node_' + i + '_' + j + '" class="node" style="top: ' + y_pos + 'px; left: ' + x_pos + 'px"></div>';
+                node.onmouseout = function () {
+                    table.covered_node = 0;
+                    table.update_colors();
+                };
             }
         }
+
         for (let i = 0; i < y; ++i) {
             for (let j = 0; j < x; ++j) {
-                let table = this;
-                this.clicknode(i, j).onclick = function () { if (!table.busy) f_click(j, i, table) };
+                this.clicknode(i, j).onclick = function () {
+                    if (!table.busy) {
+                        table.f_click(j, i, table);
+                    }
+                };
             }
         }
+
+        this.onchange();
+        this.update_score();
+        this.update_colors();
         this.node(this.start_point[1], this.start_point[0]).style.background = this.start_node_color;
         this.node(this.end_point[1], this.end_point[0]).style.background = this.end_node_color;
         this.update_background();
     }
 
-    add_segment(x, y, animation_mode = this.draw_segment_animations.no_animation) {
+    add_segment(x, y, animation_mode = drawNoAnimation) {
         let last_x = this.points[this.lines_cnt()][0];
         let last_y = this.points[this.lines_cnt()][1];
-        animation_mode(last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
+        animation_mode(this, last_x * this.sz, last_y * this.sz, x * this.sz, y * this.sz);
         this.points.push([x, y]);
         this.onchange();
         this.update_colors();
         this.update_score();
-        if (this.end_point[0] == x && this.end_point[1] == y) {
-            // this.onwin(this);
-            this.win = true;
-        }
-        else {
-            this.win = false;
-        }
     }
 
-    destroy_segments(x, y, animation_mode = this.destroy_segment_animation.no_animation)
+    destroy_segments(x, y, animation_mode = destroyNoAnimation)
     {
         for (let n = 0; n < this.lines_cnt(); ++n) {
             if (x == this.points[n][0] && y == this.points[n][1]) {
-                animation_mode(this.lines_cnt() - n);
+                animation_mode(this, this.lines_cnt() - n);
                 return true;
             }
         }
@@ -572,7 +440,8 @@ class Table
         return false;
     }
 
-    onchange() {
+    onchange()
+    {
         let last_point = this.points[this.points.length - 1];
         if (this.end_point[0] == last_point[0] && this.end_point[1] == last_point[1]) {
             this.win = true;
@@ -582,12 +451,10 @@ class Table
         }
         if (!this.win) {
             document.getElementById('submit_button').setAttribute('disabled', '');
-            // document.getElementById('chain_error').removeAttribute('hidden');
             document.getElementById('submit_it').setAttribute('hidden', '');
         }
         else {
             document.getElementById('submit_button').removeAttribute('disabled');
-            // document.getElementById('chain_error').setAttribute('hidden', '');
             document.getElementById('submit_it').removeAttribute('hidden');
         }
         data.setAttribute('score', this.lines_cnt());
@@ -595,45 +462,6 @@ class Table
         data.setAttribute('field_size_x', this.sizeX);
         data.setAttribute('field_size_y', this.sizeY);
     }
-}
-
-function f_click_1(j, i, table)
-{
-    let last_x = table.points[table.lines_cnt()][0];
-    let last_y = table.points[table.lines_cnt()][1];
-    len = table.lines_cnt();
-
-    if (table.destroy_segments(j, i, table.destroy_segment_animation.linear_animation)) {
-        return;
-    }
-
-    for (let n = 1; n <= len; ++n) {
-        if (segments_intersect(j, i, last_x, last_y, table.points[n - 1][0], table.points[n - 1][1], table.points[n][0], table.points[n][1])) {
-            // alert('Intersection!!');
-            return;
-        }
-    }
-
-    if ((i - last_y) ** 2 + (j - last_x) ** 2 - 5) {
-        // alert('Distance should be ~' + Math.sqrt(5) + '!');
-        return;
-    }
-
-    table.add_segment(j, i, table.draw_segment_animations.linear_animation);
-
-    // table.onwin = function(table) {
-    //     data.setAttribute('score', table.lines_cnt());
-    //     data.setAttribute('points', JSON.stringify(table.points));
-    //     data.setAttribute('field_size_x', table.sizeX);
-    //     data.setAttribute('field_size_y', table.sizeY);
-    //     document.getElementById('submit_button').setAttribute('disabled', false);
-    //     // submit_score.innerHTML = table.lines_cnt();
-    //     // setTimeout(function() {
-    //     //     //alert('Your score '+table.lines_cnt());TODO better
-    //     //     table.clear_table();
-    //     //     table.win = false;
-    //     // }, 300)
-    // }
 }
 
 let yura_styles = {
@@ -654,12 +482,9 @@ let yura_styles = {
     used_node_color: 'white',
     clickable_node_radius: 20,
     background_color: '#fffefe',
-    background_border: 10
+    background_border: 10,
 }
 
-let Tbl = new Table(
-    yura_styles
-);
-
-Tbl.generate_table(7, 7, f_click_1, [3, 3], [4, 6]);
+let Tbl = new Table(yura_styles);
+Tbl.generate_table(7, 7, [3, 3], [4, 6]);
 Tbl.resize(350, 350);

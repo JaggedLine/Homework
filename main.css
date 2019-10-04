@@ -59,11 +59,11 @@ input:focus {
     font-size: 16px;
     padding-top: 13px;
     padding-bottom: 13px;
+    cursor: default !important;
 }
 
 .btn-orange:hover:enabled {
     background-color: #b85128 !important;
-    cursor: default;
 }
 
 .btn-orange:active:enabled {

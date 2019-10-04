@@ -26,7 +26,11 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
     x1, y1, x2, y2, x3, y3, x4, y4 = segment1[0][0], segment1[0][1], segment1[1][0], segment1[1][1], segment2[0][0], segment2[0][1], segment2[1][0], segment2[1][1]
     a = vec_mul((x2 - x1, y2 - y1), (x3 - x1, y3 - y1)) * vec_mul((x2 - x1, y2 - y1), (x4 - x1, y4 - y1))
     b = vec_mul((x4 - x3, y4 - y3), (x1 - x3, y1 - y3)) * vec_mul((x4 - x3, y4 - y3), (x2 - x3, y2 - y3))
-    return (a <= 0 and b <= 0)
+    if a <= 0 and b <= 0:
+        if a == 0 and b == 0:
+            return False
+        return True
+    return False
 
 def calc(data: tuple, field_size: tuple) -> int:
     line, x, y = data

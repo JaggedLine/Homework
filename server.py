@@ -12,6 +12,8 @@ def process(data: str) -> tuple:
     print(ddict)
     line_bad = ddict["points"]
     name = ddict["name"]
+    if name == "" or line_bad is None:
+        return ("", None)
     line = [(i[0], i[1]) for i in line_bad]
     x = [i[0] for i in line_bad]
     y = [i[1] for i in line_bad]
@@ -100,8 +102,10 @@ class Handler(BaseHTTPRequestHandler):
         content_length = int(self.headers["Content-Length"])
         name, data = process(self.rfile.read(content_length).decode("utf8"))
         FORBID = ",;:.{}[]()\n\t"
+        if (data is None or name == ""):
+            return
         for i in FORBID:
-            if (i in name or name == ""):
+            if (i in name):
                 #self.send_error(403, "Bad username. '" + FORBID + "' not allowed in username.")
                 self.send_response(200)
                 self.send_header("Content-type", "")

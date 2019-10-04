@@ -596,12 +596,12 @@ function f_click_1(j, i, table)
         data.setAttribute('points', JSON.stringify(table.points));
         data.setAttribute('field_size_x', table.sizeX);
         data.setAttribute('field_size_y', table.sizeY);
-        submit_score.innerHTML = table.lines_cnt();
-        setTimeout(function() {
-            //alert('Your score '+table.lines_cnt());TODO better
-            table.clear_table();
-            table.win = false;
-        }, 300)
+        // submit_score.innerHTML = table.lines_cnt();
+        // setTimeout(function() {
+        //     //alert('Your score '+table.lines_cnt());TODO better
+        //     table.clear_table();
+        //     table.win = false;
+        // }, 300)
     }
 }
 

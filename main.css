@@ -90,6 +90,17 @@ input:focus {
     background-color: transparent;
 }
 
+.tick {
+    font-size: 18px;
+}
+
+.text-cut {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100px;
+}
+
 
 /*field classes*/
 

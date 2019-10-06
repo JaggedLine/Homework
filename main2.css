@@ -1,0 +1,135 @@
+body {
+    background-color: #2e2e2e;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.image-sm {
+    height: 30px;
+}
+
+.geo-image {
+    background-image: url(picture.svg); 
+    background-size: 100%;
+}
+
+.my-jumbotron {
+    background-color: transparent;
+    border-radius: 0 !important;
+}
+
+.bg-darkblue {
+    background-color: #1f2037;
+}
+
+.bg-green {
+    background-color: #296d63;
+}
+
+.bg-black {
+    background-color: rgb(50, 50, 50);
+}
+
+.col-grey {
+    color: rgb(173, 173, 173);
+}
+
+.col-darkgrey {
+    color: rgb(102, 102, 102);
+}
+
+input {
+    border-radius: 0 !important;
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    font-size: 16px;
+    border: none !important;
+}
+
+input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-orange {
+    border: none;
+    border-radius: 0;
+    background-color: #c85d31;
+    font-size: 16px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    cursor: default !important;
+}
+
+.btn-orange:hover:enabled {
+    background-color: #b85128 !important;
+}
+
+.btn-orange:active:enabled {
+    background-color: #9e431f !important;
+}
+
+.btn-orange:focus:enabled {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-orange:disabled {
+    background-color: #642e15;
+    color: #888888;
+}
+
+.field-var {
+    background-image: url('logo.png');
+    background-size: 100%;
+    background-color: transparent;
+    border: 0;
+    height: 100px;
+    width: 100px;
+    margin: 5px;
+    font-size: 20px;
+}
+
+.field-var:hover {
+    background-color: transparent;
+}
+
+.tick {
+    font-size: 18px;
+}
+
+.text-cut {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100px;
+}
+
+
+/*field classes*/
+
+.node {
+    position: absolute;
+    border-radius: 50%;
+    background-size: 100% !important;
+}
+
+.segment {
+    position: absolute;
+}
+
+.grid {
+    position: absolute;
+}
+
+#field {
+    position: relative;
+    background: #fffefe;
+    width: 350px;
+    height: 350px;
+}
+
+/* #score {
+    display: none;
+} */

@@ -1,7 +1,7 @@
 const rowsCnt = 5;
 
 function update_table(scores) {
-    for (i = 1; i <= rowsCnt; ++i) {
+    for (let i = 1; i <= rowsCnt; ++i) {
         if (scores[i-1] === undefined) {
             document.getElementById('n'+i).innerHTML = "Nobody";
             document.getElementById('s'+i).innerHTML = "---";
@@ -19,27 +19,21 @@ function comp(a, b) {
 }
 
 async function update() {
-    field_size = {
+    let field_size = {
         x_size: Tbl.sizeX,
         y_size: Tbl.sizeY
     };
-    url = "table_" + field_size.x_size + '_' + field_size.y_size + ".json";
-    response = await fetch(url);
-    // console.log(url)
-    if (!response.ok) {
-        return;
-    }
-    bad_scores = await response.json();
-    scores = [];
-    for (i = 0; i < Object.keys(bad_scores).length; ++i) {
+    let url = `table_${field_size.x_size}_${field_size.y_size}.json`;
+    let response = await fetch(url).catch(err => showError());
+    let bad_scores = await response.json();
+    let scores = [];
+    for (let i = 0; i < Object.keys(bad_scores).length; ++i) {
         pair = [Object.keys(bad_scores)[i], bad_scores[Object.keys(bad_scores)[i]]];
         scores[scores.length] = pair;
     }
     scores.sort(comp);
-    // console.log(scores);
     update_table(scores);
     return;
 }
 
 update();
-//setTimeout(update, 0);

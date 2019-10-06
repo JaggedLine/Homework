@@ -1,12 +1,8 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
@@ -16,143 +12,111 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="my-navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo.png" class="image-sm m-1">
-                <img src="logo2.png" class="image-sm m-1">
+            <a href="/index" class="brand">
+                <img src="logo.png" class="image-sm"><img src="logo2.png" class="image-sm">
             </a>
         </div>
     </nav>
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 bg-white">
-                <div class="jumbotron my-jumbotron">
-                    <h2 class="text-center">Geometric puzzle</h2>
-                    <br>
-                    <p class="lead col-darkgrey">
-                        Find the longest solution, which is built in the maximum possible moves, 
-                        - and you will get the highest score.
-                    </p>
-                </div>
+        <div class="flex">
+            <div class="column jumbotron bg-white">
+                <p class="title text-center">Geometric puzzle</p>
+                <p class="text col-darkgrey">
+                    Find the longest solution, which is built in the maximum possible moves, 
+                    - and you will get the highest score.
+                </p>
             </div>
-            <div class="col-md-6 bg-black geo-image"></div>
+            <div class="column geo-image"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-6 bg-darkblue">
-                <div class="jumbotron my-jumbotron">
-                    <h2 class="text-light text-center">The longest polygonal chain</h2>
-                    <br>
-                    <p class="lead col-grey">
-                        Construct the longest non-self-intersecting polyline
-                        whose vertices are nodes of the grid and the length of each edge is knight move.
-                    </p>
-                    <br><br>
-                    <!-- <h4 class="text-light">Score: 0</h4>
-                    <br>
-                    <div class="d-flex flex-wrap">
-                        <div class="field-var m-2 d-flex">
-                            <h5 class="mx-auto my-auto text-light">5 x 5</h5>
-                        </div>
-                        <button class="btn btn-dark field-var">5 x 5</button>
-                        <button class="btn btn-dark field-var">7 x 7</button>
-                        <button class="btn btn-dark field-var">10 x 10</button>
-                        <span id="score"></span>
-                    </div>
-                    -->
-                    <!-- <span id="score"></span> -->
-                    <input id="name" class="form-control" placeholder="Your name">
-                    <br>
-                    <button id="submit_button" class="btn-block btn-lg btn-dark btn-orange" disabled>
-                        Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
-                    </button>
-                    <!-- <span class="text-danger" id="chain_error">Chain must end at the marked node</span> -->
-                    <span class="text-success" id="submit_success" hidden>Your chain was successfully submitted!</span>
-                </div>
+        <div class="flex">
+            <div class="column jumbotron bg-darkblue">
+                <p class="title text-center col-white">The longest polygonal chain</p>
+                <p class="text col-grey">
+                    Construct the longest non-self-intersecting polyline
+                    whose vertices are nodes of the grid and the length of each edge is knight move.
+                </p>
+                <br><br>
+                <input id="name" placeholder="Your name">
+                <br>
+                <button class="bg-orange" id="submit_button" disabled>
+                    Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
+                </button>
+                <span class="col-green" id="submit_success" hidden>Your chain was successfully submitted!</span>
+                <span class="col-red" id="submit_error" hidden></span>
             </div>
-            <div class="col-lg-6 bg-darkblue">
-                <div class="jumbotron my-jumbotron d-flex">
-                    <div class="mx-auto my-auto">
-                        <div id="field">
-                            <div id="grid"></div>
-                            <div id="segments"></div>
-                            <div id="nodes"></div>
-                        </div>
-                        <div id="data" style="display: none;"></div>
-                    </div>
+            <div class="column jumbotron bg-darkblue">
+                <div class="mx-auto my-auto field" id="field">
+                    <div id="grid"></div>
+                    <div id="segments"></div>
+                    <div id="nodes"></div>
+                    <div id="data" style="display: none"></div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 bg-white">
-                <div class="jumbotron my-jumbotron">
-                    <h3>Rules</h3>
-                    <br>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Carefully read the statement of the problem and look at the picture with example.
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Solve the problem on squared paper or in one of the levels from #Pythagorea app.
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Post a screenshot of your solution. Your account should be public so that we can see your post.
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Add hashtags #euclidea and #euclidea_puzzle_8.
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Mention @euclidea_app on the screenshot.
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-success tick"></span>
-                        Write a kukarek why your answer is correct (optional).
-                    </p>
-                    <p>
-                        <span class="fa fa-check-square text-secondary tick"></span>
-                        You can also send us a message with solution in Direct, but publishing a post is better.
-                    </p>
-                </div>
+        <div class="flex">
+            <div class="column jumbotron bg-white">
+                <p class="title">Rules</p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Carefully read the statement of the problem and look at the picture with example.
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Solve the problem on squared paper or in one of the levels from #Pythagorea app.
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Post a screenshot of your solution. Your account should be public so that we can see your post.
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Add hashtags #euclidea and #euclidea_puzzle_8.
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Mention @euclidea_app on the screenshot.
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-green"></span>
+                    Write a kukarek why your answer is correct (optional).
+                </p>
+                <p class="text-sm">
+                    <span class="fa fa-check-square col-darkgrey"></span>
+                    You can also send us a message with solution in Direct, but publishing a post is better.
+                </p>
             </div>
-            <div class="col-md-6 bg-green">
-                <div class="jumbotron my-jumbotron">
-                    <h3 class="text-light">Leaderboards</h3>
-                    <br>
-                    <div class="table-responsive">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td class="text-light">1. </td>
-                                    <td class="text-light text-cut"><span id="n1">Nobody</span></td>
-                                    <td class="text-light"><span id="s1">---</span> points</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-light">2. </td>
-                                    <td class="text-light text-cut"><span id="n2">Nobody</span></td>
-                                    <td class="text-light"><span id="s2">---</span> points</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-light">3. </td>
-                                    <td class="text-light text-cut"><span id="n3">Nobody</span></td>
-                                    <td class="text-light"><span id="s3">---</span> points</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-light">4. </td>
-                                    <td class="text-light text-cut"><span id="n4">Nobody</span></td>
-                                    <td class="text-light"><span id="s4">---</span> points</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-light">4. </td>
-                                    <td class="text-light text-cut"><span id="n5">Nobody</span></td>
-                                    <td class="text-light"><span id="s5">---</span> points</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="column jumbotron bg-green">
+                <p class="title col-white">Leaderboards</p>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="col-white">1. </td>
+                            <td class="col-white text-cut"><span id="n1">Nobody</span></td>
+                            <td class="col-white"><span id="s1">---</span> points</td>
+                        </tr>
+                        <tr>
+                            <td class="col-white">2. </td>
+                            <td class="col-white text-cut"><span id="n2">Nobody</span></td>
+                            <td class="col-white"><span id="s2">---</span> points</td>
+                        </tr>
+                        <tr>
+                            <td class="col-white">3. </td>
+                            <td class="col-white text-cut"><span id="n3">Nobody</span></td>
+                            <td class="col-white"><span id="s3">---</span> points</td>
+                        </tr>
+                        <tr>
+                            <td class="col-white">4. </td>
+                            <td class="col-white text-cut"><span id="n4">Nobody</span></td>
+                            <td class="col-white"><span id="s4">---</span> points</td>
+                        </tr>
+                        <tr>
+                            <td class="col-white">5. </td>
+                            <td class="col-white text-cut"><span id="n5">Nobody</span></td>
+                            <td class="col-white"><span id="s5">---</span> points</td>
+                        </tr>
+                    </tbody>
                 </div>
             </div>
         </div>

@@ -1,20 +1,41 @@
 body {
+    margin: 0;
     background-color: #2e2e2e;
     font-family: 'Nanum Gothic', sans-serif;
 }
 
-.image-sm {
-    height: 30px;
+*, *::after, *::before {
+    box-sizing: border-box;
 }
 
-.geo-image {
-    background-image: url(picture.svg); 
-    background-size: 100%;
+button, input {
+    font-family: inherit;
 }
 
-.my-jumbotron {
-    background-color: transparent;
-    border-radius: 0 !important;
+/* Common classes */
+
+.col-white {
+    color: white;
+}
+
+.col-grey {
+    color: rgb(173, 173, 173);
+}
+
+.col-darkgrey {
+    color: #5e5e5e;
+}
+
+.col-green {
+    color: #28a745;
+}
+
+.col-red {
+    color: #dc3545;
+}
+
+.bg-white {
+    background-color: white;
 }
 
 .bg-darkblue {
@@ -25,94 +46,162 @@ body {
     background-color: #296d63;
 }
 
-.bg-black {
-    background-color: rgb(50, 50, 50);
+.image-sm {
+    height: 30px;
 }
 
-.col-grey {
-    color: rgb(173, 173, 173);
+.title {
+    font-size: 32px;
 }
 
-.col-darkgrey {
-    color: rgb(102, 102, 102);
-}
-
-input {
-    border-radius: 0 !important;
-    padding-top: 25px !important;
-    padding-bottom: 25px !important;
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-    font-size: 16px;
-    border: none !important;
-}
-
-input:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.btn-orange {
-    border: none;
-    border-radius: 0;
-    background-color: #c85d31;
-    font-size: 16px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    cursor: default !important;
-}
-
-.btn-orange:hover:enabled {
-    background-color: #b85128 !important;
-}
-
-.btn-orange:active:enabled {
-    background-color: #9e431f !important;
-}
-
-.btn-orange:focus:enabled {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.btn-orange:disabled {
-    background-color: #642e15;
-    color: #888888;
-}
-
-.field-var {
-    background-image: url('logo.png');
-    background-size: 100%;
-    background-color: transparent;
-    border: 0;
-    height: 100px;
-    width: 100px;
-    margin: 5px;
+.text {
     font-size: 20px;
+    line-height: 30px;
 }
 
-.field-var:hover {
-    background-color: transparent;
+.text-sm {
+    font-size: 16px;
+    line-height: 24px;
 }
 
-.tick {
-    font-size: 18px;
+.text-center {
+    width: 100%;
+    text-align: center;
 }
 
 .text-cut {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 100px;
+    max-width: 200px;
 }
 
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-/*field classes*/
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+.jumbotron {
+    padding: 50px 50px 60px 50px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 300px;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Custom classes */
+
+.my-navbar {
+    padding: 10px;
+    background-color: #343a40;
+}
+
+.brand img {
+    margin: 6px;
+}
+
+.geo-image {
+    background-image: url(picture.svg);
+    background-size: 100%;
+}
+
+input {
+    padding: 15px;
+    border-width: 0;
+    font-size: 16px;
+    color: #495057;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+}
+
+button {
+    padding: 15px;
+    border-width: 0;
+    font-size: 16px;
+    width: 100%;
+    color: white;
+    background-color: #c85d31;
+}
+
+button:hover:enabled {
+    background-color: #b85128;
+}
+
+button:active:enabled {
+    background-color: #9e431f;
+}
+
+button:focus:enabled {
+    outline: none;
+}
+
+button:disabled {
+    background-color: #642e15;
+    color: #888888;
+}
+
+.table {
+    width: 100%;
+}
+
+.table td {
+    padding: 15px;
+}
+
+/* Field classes */
 
 .node {
     position: absolute;
     border-radius: 50%;
     background-size: 100% !important;
+    border-width: 0;
 }
 
 .segment {
@@ -123,13 +212,11 @@ input:focus {
     position: absolute;
 }
 
-#field {
+.field {
     position: relative;
     background: #fffefe;
     width: 350px;
     height: 350px;
+    /* width: 100% !important;
+    height: 100%; */
 }
-
-/* #score {
-    display: none;
-} */

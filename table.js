@@ -125,7 +125,6 @@ class Table
             let n = this.find_node(this.covered_node[0], this.covered_node[1]);
             if (n != this.points.length - 1) {
                 let x = this.covered_node[0], y = this.covered_node[1];
-                // console.log(x, y, n);
                 if (n == -1) {
                     this.node(y, x).style.background = this.hover_node_color;
                 }

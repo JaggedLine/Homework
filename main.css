@@ -1,6 +1,114 @@
 body {
+    margin: 0;
     background-color: #2e2e2e;
     font-family: 'Nanum Gothic', sans-serif;
+}
+
+.navbar {
+    background-color: #272a31;
+    padding: 10px;
+}
+
+.navbar-dark {
+    color: #ffffff;
+}
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navbar-brand {
+    width: 100%;
+}
+
+.m-1 {
+    margin: 5px;
+}
+
+.row {
+    display: flex;
+    flex: 1;
+}
+
+.col-md-6 {
+    flex: 50%;
+}
+
+.jumbotron {
+    margin: 50px;
+    padding-left: 100px;
+}
+
+.text-center {
+    text-align: left;
+    width: 100%;
+}
+
+.lead {
+    margin-top: 0!important;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.col-lg-6 {
+    flex: 50%;
+}
+
+.text-light {
+    color: #ffffff;
+}
+
+.form-control {
+    width: 100%;
+    padding: 16px!important;
+    box-sizing : border-box;
+    margin-bottom: 16pt;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-lg {
+    display: inline-block;
+    line-height: 1.5;
+}
+
+.btn-dark {
+    color: #ffffff;
+}
+
+.text-success {
+    color: #281745;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.table-responsive {
+}
+
+.table {
+    width: 100%;
+}
+
+.table-borderless {
+    border: 0;
 }
 
 .image-sm {
@@ -10,11 +118,6 @@ body {
 .geo-image {
     background-image: url(picture.svg); 
     background-size: 100%;
-}
-
-.my-jumbotron {
-    background-color: transparent;
-    border-radius: 0 !important;
 }
 
 .bg-darkblue {
@@ -96,7 +199,11 @@ input:focus {
 }
 
 .tick {
-    font-size: 18px;
+    background-image: url("tick.svg");
+}
+
+.tick-grey {
+    background-image: url(tick_grey.svg);
 }
 
 .text-cut {
@@ -113,6 +220,7 @@ input:focus {
     position: absolute;
     border-radius: 50%;
     background-size: 100% !important;
+    border-width: 0;
 }
 
 .segment {

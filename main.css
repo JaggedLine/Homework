@@ -202,14 +202,6 @@ input:focus {
     background-color: transparent;
 }
 
-.tick {
-    background-image: url("tick.svg");
-}
-
-.tick-grey {
-    background-image: url(tick_grey.svg);
-}
-
 .text-cut {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -240,6 +232,7 @@ input:focus {
     background: #fffefe;
     width: 350px;
     height: 350px;
+    margin-bottom: 100px;
 }
 
 /* #score {

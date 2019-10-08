@@ -4,6 +4,10 @@ body {
     font-family: 'Nanum Gothic', sans-serif;
 }
 
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
 .navbar {
     background-color: #272a31;
     padding: 10px;

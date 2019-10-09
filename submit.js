@@ -2,6 +2,7 @@ const FORBID = ",;:.{}[]()\n\t";
 
 function checkName(name)
 {
+    if (name == "") return false;
     for (let i = 0; i < name.length; i++) {
         if (FORBID.indexOf(name[i]) != -1) {
             return false;
@@ -29,7 +30,7 @@ async function sendJSON()
 {
     let name = document.getElementById('name').value;
     if (!checkName(name)) {
-        showError('Name contains forbidden characters!');
+        showError('Name is invalid!');
         return;
     }
     let send_object = {

@@ -9,7 +9,6 @@ class SecurityError(Exception):
 
 def process(data: str) -> tuple:
     ddict = json.loads(data)
-    print(ddict)
     line_bad = ddict["points"]
     name = ddict["name"]
     if name == "" or line_bad is None:
@@ -32,16 +31,20 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
         return True
     return False
 
-def calc(data: tuple, field_size: tuple) -> int:
+def verify_and_calc(data: tuple, field_size: tuple) -> int:
     line, x, y = data
+    knight_dir = [(1, 2), (2, 1), (-1, 2), (2, -1), (-2, 1), (1, -2), (-1, -2), (-2, -1)]
     if (len(set(line)) != len(line)):
-        raise SecurityError("STOP CHEATING! BAN!")
+        raise SecurityError("STOP CHEATING! BAN! (Points must be unique)")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
-        raise SecurityError("STOP CHEATING! BAN!")
+        raise SecurityError("STOP CHEATING! BAN! (Your chain is out of bounds!)")
+    for i in range(1, len(line)):
+        if ((line[i][0]-line[i-1][0], line[i][1]-line[i-1][1]) not in knight_dir):
+            raise SecurityError("STOP CHEATING! BAN! (Segments must be like a knight move)")
     for i in range(1, len(line)):
         for j in range(i+2, len(line)):
             if (intersect((line[i-1], line[i]), (line[j-1], line[j]))):
-                raise SecurityError("STOP CHEATING! BAN!")
+                raise SecurityError("STOP CHEATING! BAN! (Segments must not intersect)")
     return len(line) - 1
 
 def save_results(result: tuple, field_size: tuple) -> None:
@@ -105,19 +108,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
         name, data = process(self.rfile.read(content_length).decode("utf8"))
-        FORBID = ",;:.{}[]()\n\t"
         if (data is None or name == ""):
             return
-        for i in FORBID:
-            if (i in name):
-                #self.send_error(403, "Bad username. '" + FORBID + "' not allowed in username.")
-                self.send_response(200)
-                self.send_header("Content-type", "")
-                self.end_headers()
-                return
         field_size = (int(self.headers["Field-Size-X"]), int(self.headers["Field-Size-Y"]))
         try:
-            result = calc(data, field_size)
+            result = verify_and_calc(data, field_size)
         except SecurityError as e:
             self.send_error(403, e.message)
             return

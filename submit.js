@@ -1,13 +1,6 @@
-const FORBID = ",;:.{}[]()\n\t";
-
 function checkName(name)
 {
     if (name == "") return false;
-    for (let i = 0; i < name.length; i++) {
-        if (FORBID.indexOf(name[i]) != -1) {
-            return false;
-        }
-    }
     return true;
 }
 
@@ -22,7 +15,7 @@ function showSuccess()
 function showError(err)
 {
     document.getElementById('submit_error').removeAttribute('hidden');
-    document.getElementById('submit_error').innerHTML = err;
+    document.getElementById('submit_error').innerText = err;
     setTimeout(() => document.getElementById('submit_error').setAttribute('hidden', ''), 3000);
 }
 

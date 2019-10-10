@@ -226,7 +226,7 @@ class Table
 
     update_score() {
         if (this.show_score) {
-            score.innerHTML = this.lines_cnt();
+            score.innerText = this.lines_cnt();
         }
     }
 

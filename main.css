@@ -73,7 +73,7 @@ button, input {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 200px;
+    max-width: 150px;
 }
 
 .container {
@@ -121,6 +121,7 @@ button, input {
     flex-direction: column;
     flex-grow: 1;
     flex-basis: 300px;
+    max-width: 100%;
 }
 
 .mx-auto {
@@ -131,6 +132,11 @@ button, input {
 .my-auto {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.my-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /* Custom classes */
@@ -187,11 +193,16 @@ button:disabled {
     color: #888888;
 }
 
-.table {
-    width: 100%;
+.table-responsive {
+    overflow-x: auto;
 }
 
-.table td {
+table {
+    width: 100%;
+    max-width: 100%;
+}
+
+table td {
     padding: 15px;
 }
 
@@ -215,8 +226,4 @@ button:disabled {
 .field {
     position: relative;
     background: #fffefe;
-    width: 350px;
-    height: 350px;
-    /* width: 100% !important;
-    height: 100%; */
 }

@@ -213,9 +213,9 @@ class Table
     }
 
     resize(xLength, yLength) {
-        let xsz = (xLength - this.node_radius * 2) / (this.sizeX - 1);
-        let ysz = (yLength - this.node_radius * 2) / (this.sizeY - 1);
-        this.sz = Math.min(xsz , ysz);
+        let xsz = (xLength - this.node_radius * 2 - this.background_border * 2) / (this.sizeX - 1);
+        let ysz = (yLength - this.node_radius * 2 - this.background_border * 2) / (this.sizeY - 1);
+        this.sz = Math.min(xsz, ysz);
         this.update_positions();
         this.update_background();
     }
@@ -485,5 +485,8 @@ let yura_styles = {
 }
 
 let Tbl = new Table(yura_styles);
+let field = document.getElementById('field');
+let tableMaxWidth = 350;
+let sz = Math.min(field.parentNode.clientWidth, tableMaxWidth);
 Tbl.generate_table(7, 7, [3, 3], [4, 6]);
-Tbl.resize(350, 350);
+Tbl.resize(sz, sz);

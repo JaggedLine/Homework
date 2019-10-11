@@ -40,21 +40,22 @@
                     Construct the longest non-self-intersecting polyline
                     whose vertices are nodes of the grid and the length of each edge is knight move.
                 </p>
-                <br><br>
-                <input id="name" placeholder="Your name">
                 <br>
-                <button class="bg-orange" id="submit_button" disabled>
+                <input id="name" placeholder="Your name" class="my-10">
+                <button class="bg-orange my-10" id="submit_button" disabled>
                     Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
                 </button>
                 <span class="col-green" id="submit_success" hidden>Your chain was successfully submitted!</span>
                 <span class="col-red" id="submit_error" hidden></span>
             </div>
             <div class="column jumbotron bg-darkblue">
-                <div class="mx-auto my-auto field" id="field">
-                    <div id="grid"></div>
-                    <div id="segments"></div>
-                    <div id="nodes"></div>
-                    <div id="data" style="display: none"></div>
+                <div class="column">
+                    <div class="mx-auto my-auto field" id="field">
+                        <div id="grid"></div>
+                        <div id="segments"></div>
+                        <div id="nodes"></div>
+                        <div id="data" style="display: none"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,34 +93,36 @@
             </div>
             <div class="column jumbotron bg-green">
                 <p class="title col-white">Leaderboards</p>
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td class="col-white">1. </td>
-                            <td class="col-white text-cut"><span id="n1">Nobody</span></td>
-                            <td class="col-white"><span id="s1">---</span> points</td>
-                        </tr>
-                        <tr>
-                            <td class="col-white">2. </td>
-                            <td class="col-white text-cut"><span id="n2">Nobody</span></td>
-                            <td class="col-white"><span id="s2">---</span> points</td>
-                        </tr>
-                        <tr>
-                            <td class="col-white">3. </td>
-                            <td class="col-white text-cut"><span id="n3">Nobody</span></td>
-                            <td class="col-white"><span id="s3">---</span> points</td>
-                        </tr>
-                        <tr>
-                            <td class="col-white">4. </td>
-                            <td class="col-white text-cut"><span id="n4">Nobody</span></td>
-                            <td class="col-white"><span id="s4">---</span> points</td>
-                        </tr>
-                        <tr>
-                            <td class="col-white">5. </td>
-                            <td class="col-white text-cut"><span id="n5">Nobody</span></td>
-                            <td class="col-white"><span id="s5">---</span> points</td>
-                        </tr>
-                    </tbody>
+                <div class="table-responsive">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="col-white">1. </td>
+                                <td class="col-white text-cut"><span id="n1">Nobody</span></td>
+                                <td class="col-white"><span id="s1">---</span> points</td>
+                            </tr>
+                            <tr>
+                                <td class="col-white">2. </td>
+                                <td class="col-white text-cut"><span id="n2">Nobody</span></td>
+                                <td class="col-white"><span id="s2">---</span> points</td>
+                            </tr>
+                            <tr>
+                                <td class="col-white">3. </td>
+                                <td class="col-white text-cut"><span id="n3">Nobody</span></td>
+                                <td class="col-white"><span id="s3">---</span> points</td>
+                            </tr>
+                            <tr>
+                                <td class="col-white">4. </td>
+                                <td class="col-white text-cut"><span id="n4">Nobody</span></td>
+                                <td class="col-white"><span id="s4">---</span> points</td>
+                            </tr>
+                            <tr>
+                                <td class="col-white">5. </td>
+                                <td class="col-white text-cut"><span id="n5">Nobody</span></td>
+                                <td class="col-white"><span id="s5">---</span> points</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

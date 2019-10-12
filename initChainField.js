@@ -1,4 +1,4 @@
-euclideaFieldStyle = {
+let euclideaFieldStyle = {
 	node_radius: 7,
 	node_color: 'transparent',
     used_node_color: 'white',
@@ -29,7 +29,6 @@ euclideaFieldStyle = {
 let chainField = new ChainField(euclideaFieldStyle);
 
 chainField.onchange = function() {
-    console.log(this.win, this.last_point);
 	if (!this.win) {
         document.getElementById('submit_button').setAttribute('disabled', '');
         document.getElementById('submit_it').setAttribute('hidden', '');
@@ -45,4 +44,4 @@ chainField.onchange = function() {
 }
 
 chainField.generate_table(7, 7, [3, 3], [4, 6]);
-chainField.resize_as_parent();
+chainField.tie_to_parent();

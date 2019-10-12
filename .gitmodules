@@ -1,0 +1,3 @@
+[submodule "Chain-Field"]
+	path = Chain-Field
+	url = git@github.com:JaggedLine/Chain-Field.git

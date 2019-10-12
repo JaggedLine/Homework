@@ -35,6 +35,12 @@ function addElement(parent, tag, style, opt)
     return elem;
 }
 
+function fromInterval(x, L, R) {
+    x = Math.min(x, R);
+    x = Math.max(x, L);
+    return x;
+}
+
 function setStyles(elem, style) {
     for (let prop in style) {
         elem.style[prop] = style[prop]
@@ -80,6 +86,14 @@ class Table
 
         this.background_color = opt.background_color || 'transparent';
         this.background_border = opt.background_border || 0;
+
+        this.maxWidth = opt.maxWidth || Infinity;
+        this.minWidth = opt.minWidth || 0;
+        this.maxHeight = opt.maxHeight || Infinity;
+        this.minHeight = opt.minHeight || 0;
+
+        this.max_sz = opt.max_sz || Infinity;
+        this.min_sz = opt.min_sz || 0;
     }
 
     make_busy() {
@@ -104,6 +118,14 @@ class Table
 
     gridline(dir, x) {
         return document.getElementById(`gridline_${this.id}_${dir}${x}`);
+    }
+
+    get width() {
+        return this.sz * (this.sizeX - 1) + 2 * this.node_radius + 2 * this.background_border;
+    }
+
+    get height() {
+        return this.sz * (this.sizeY - 1) + 2 * this.node_radius + 2 * this.background_border;
     }
 
     update_colors()
@@ -212,12 +234,27 @@ class Table
         field.style.border = `${this.background_border} solid ${this.background_color}`;
     }
 
-    resize(xLength, yLength) {
+    resize(xLength=Infinity, yLength=Infinity) {
+        xLength = fromInterval(xLength, this.minWidth, this.maxWidth);
+        yLength = fromInterval(yLength, this.minHeight, this.maxHeight);
         let xsz = (xLength - this.node_radius * 2 - this.background_border * 2) / (this.sizeX - 1);
         let ysz = (yLength - this.node_radius * 2 - this.background_border * 2) / (this.sizeY - 1);
+        xsz = fromInterval(xsz, this.min_sz, this.max_sz);
+        ysz = fromInterval(ysz, this.min_sz, this.max_sz);
         this.sz = Math.min(xsz, ysz);
         this.update_positions();
         this.update_background();
+    }
+
+    resize_as_parent() {
+        let parent = field.parentNode;
+        let table = this;
+        document.body.onresize = function() {
+            let parWidth = field.parentNode.clientWidth;
+            let parHeight = field.parentNode.clientHeight;
+            table.resize(parWidth);
+        }
+        document.body.onresize();
     }
 
     lines_cnt() {
@@ -482,11 +519,10 @@ let yura_styles = {
     clickable_node_radius: 20,
     background_color: '#fffefe',
     background_border: 10,
+    min_sz: 30,
+    max_sz: 50,
 }
 
 let Tbl = new Table(yura_styles);
-let field = document.getElementById('field');
-let tableMaxWidth = 350;
-let sz = Math.min(field.parentNode.clientWidth, tableMaxWidth);
 Tbl.generate_table(7, 7, [3, 3], [4, 6]);
-Tbl.resize(sz, sz);
+Tbl.resize_as_parent();

@@ -26,10 +26,10 @@ euclideaFieldStyle = {
     maxGridStep: 50,
 }
 
-let field = new ChainField(euclideaFieldStyle);
+let chainField = new ChainField(euclideaFieldStyle);
 
-field.onchange = function() {
-	console.log('onchage', this);
+chainField.onchange = function() {
+    console.log(this.win, this.last_point);
 	if (!this.win) {
         document.getElementById('submit_button').setAttribute('disabled', '');
         document.getElementById('submit_it').setAttribute('hidden', '');
@@ -38,11 +38,11 @@ field.onchange = function() {
         document.getElementById('submit_button').removeAttribute('disabled');
         document.getElementById('submit_it').removeAttribute('hidden');
     }
-    data.setAttribute('score', this.lines_cnt());
+    data.setAttribute('score', this.lines_cnt);
     data.setAttribute('points', JSON.stringify(this.points));
     data.setAttribute('field_size_x', this.sizeX);
     data.setAttribute('field_size_y', this.sizeY);
 }
 
-field.generate_table(7, 7, [3, 3], [4, 6]);
-Tbl.resize_as_parent();
+chainField.generate_table(7, 7, [3, 3], [4, 6]);
+chainField.resize_as_parent();

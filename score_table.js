@@ -20,8 +20,8 @@ function comp(a, b) {
 
 async function update() {
     let field_size = {
-        x_size: field.sizeX,
-        y_size: field.sizeY
+        x_size: chainField.sizeX,
+        y_size: chainField.sizeY
     };
     let url = `table_${field_size.x_size}_${field_size.y_size}.json`;
     let response = await fetch(url).catch(err => showError());

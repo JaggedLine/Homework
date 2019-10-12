@@ -9,7 +9,7 @@ function showSuccess()
     document.getElementById('submit_success').removeAttribute('hidden');
     setTimeout(() => document.getElementById('submit_success').setAttribute('hidden', ''), 3000);
     update();
-    Tbl.clear_table();
+    chainField.clear_table();
 }
 
 function showError(err)

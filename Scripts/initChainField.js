@@ -43,5 +43,5 @@ chainField.onchange = function() {
     data.setAttribute('field_size_y', this.sizeY);
 }
 
-chainField.generate_table(7, 7, [3, 3], [4, 6], ChainField.cfKnightGame);
+chainField.generate_table(7, 7, [3, 3], [4, 6], cfKnightGame);
 chainField.tie_to_parent();

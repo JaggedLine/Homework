@@ -48,7 +48,9 @@ def verify_and_calc(data: tuple, field_size: tuple) -> int:
     return len(line) - 1
 
 def save_results(result: tuple, field_size: tuple) -> None:
-    fname = "table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json"
+    if not os.path.isdir("Results"):
+        os.mkdir("Results")
+    fname = os.path.join("Results", "table_" + str(field_size[0]) + '_' + str(field_size[1]) + ".json")
     if not os.path.isfile(fname):
         f = open(fname, 'w', encoding="utf-8")
         f.write("{}")

@@ -17,15 +17,15 @@ for (let btn of document.querySelectorAll('#field_navigator button')) {
 			other_btn.classList.remove('active');
 		}
 
-		changeFieldSize(
-			btn.getAttribute('fieldsizex'), btn.getAttribute('fieldsizey'), 
-			[3, 3], [4, 6], cfKnightGame);
+		let sizeX = btn.getAttribute('fieldsizex');
+		let sizeY = btn.getAttribute('fieldsizey');
+		changeFieldSize(sizeX, sizeY, [3, 3], [4, 6], cfKnightGame);
 
 		btn.classList.add('active');
 		btn.classList.remove('not-active');
 
 		fieldNavigator.style.width = `${chainField.width}px`; 
-
+		document.getElementById('fieldSize').innerHTML = `${sizeX}x${sizeY}`
 		update();
 	}
 }

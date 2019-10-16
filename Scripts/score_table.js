@@ -19,6 +19,7 @@ function comp(a, b) {
 }
 
 async function update() {
+    update_table([]);
     let field_size = {
         x_size: chainField.sizeX,
         y_size: chainField.sizeY

@@ -23,8 +23,8 @@ let euclideaFieldStyle = {
     background_border: 10,
 
     gridStep: 10,
-    minGridStep: 0,
-    maxGridStep: 50,
+    minGridStep: 25,
+    maxGridStep: 60,
 }
 
 let chainField = new ChainField(euclideaFieldStyle);
@@ -45,4 +45,4 @@ chainField.onchange = function() {
 }
 
 chainField.generate_table(7, 7, [3, 3], [4, 6], cfKnightGame);
-chainField.tie_to_parent();
+// chainField.tie_to_parent();

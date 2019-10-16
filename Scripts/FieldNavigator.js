@@ -1,13 +1,10 @@
 let fieldNavigator = document.getElementById('field_navigator')
 fieldNavigator.style.width = `${chainField.width}px`; 
 
-function changeFieldSize(x, y, _this) {
+function changeFieldSize(x, y) {
 	chainField.generate_table(x, y, [3, 3], [4, 6], cfKnightGame);
-	chainField.tie_to_parent();
-	console.log(_this)
 }
 
-console.log(document.querySelectorAll('#field_navigator button'))
 for (let btn of document.querySelectorAll('#field_navigator button')) {
 	btn.onclick = function() 
 	{
@@ -19,13 +16,13 @@ for (let btn of document.querySelectorAll('#field_navigator button')) {
 
 		let sizeX = btn.getAttribute('fieldsizex');
 		let sizeY = btn.getAttribute('fieldsizey');
-		changeFieldSize(sizeX, sizeY, [3, 3], [4, 6], cfKnightGame);
+		changeFieldSize(sizeX, sizeY);
 
 		btn.classList.add('active');
 		btn.classList.remove('not-active');
 
 		fieldNavigator.style.width = `${chainField.width}px`; 
-		document.getElementById('fieldSize').innerHTML = `${sizeX}x${sizeY}`
+		document.getElementById('fieldSize').innerText = `${sizeX}x${sizeY}`
 		update();
 	}
 }

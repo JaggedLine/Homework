@@ -120,12 +120,15 @@ button, input {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    /* flex-basis: 300px; */
     max-width: 100%;
 }
 
-.base-300 {
-    flex-basis: 300px;
+.base-0 {
+    flex-basis: 0;
+}
+
+.base-50 {
+    flex-basis: 50%;
 }
 
 .mx-auto {

@@ -2,6 +2,7 @@ body {
     margin: 0;
     background-color: #2e2e2e;
     font-family: 'Nanum Gothic', sans-serif;
+    min-width: 480px;
 }
 
 *, *::after, *::before {
@@ -120,7 +121,7 @@ button, input {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    /* flex-basis: 300px; */
+     flex-basis: 0px; 
     max-width: 100%;
 }
 

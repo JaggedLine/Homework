@@ -22,8 +22,7 @@ let euclideaFieldStyle = {
     background_color: '#fffefe',
     background_border: 10,
 
-    gridStep: 10,
-    minGridStep: 0,
+    minGridStep: 30,
     maxGridStep: 50,
 }
 

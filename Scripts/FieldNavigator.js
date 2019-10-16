@@ -25,5 +25,7 @@ for (let btn of document.querySelectorAll('#field_navigator button')) {
 		btn.classList.remove('not-active');
 
 		fieldNavigator.style.width = `${chainField.width}px`; 
+
+		update();
 	}
 }

@@ -120,8 +120,12 @@ button, input {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    flex-basis: 300px;
+    /* flex-basis: 300px; */
     max-width: 100%;
+}
+
+.base-300 {
+    flex-basis: 300px;
 }
 
 .mx-auto {
@@ -171,7 +175,7 @@ button {
     padding: 15px;
     border-width: 0;
     font-size: 16px;
-    width: 100%;
+    /* width: 100%; */
     color: white;
     background-color: #c85d31;
 }
@@ -191,6 +195,20 @@ button:focus:enabled {
 button:disabled {
     background-color: #642e15;
     color: #888888;
+}
+
+.active {
+    background-color: rgb(255, 166, 0) !important;
+    color: black;
+    border-bottom: 1px solid white;
+}
+
+.not-active {
+    border-bottom: 1px solid #e68f6d;
+}
+
+.field-navigator {
+    max-width: 100%;
 }
 
 .table-responsive {

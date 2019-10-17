@@ -10,7 +10,7 @@ for (let btn of document.querySelectorAll('#field_navigator button')) {
 	{
 		for (let other_btn of 
 			document.querySelectorAll('#field_navigator button')) {
-			other_btn.classList.add('not-active');
+			// other_btn.classList.add('not-active');
 			other_btn.classList.remove('active');
 		}
 
@@ -19,7 +19,7 @@ for (let btn of document.querySelectorAll('#field_navigator button')) {
 		changeFieldSize(sizeX, sizeY);
 
 		btn.classList.add('active');
-		btn.classList.remove('not-active');
+		// btn.classList.remove('not-active');
 
 		fieldNavigator.style.width = `${chainField.width}px`; 
 		document.getElementById('fieldSize').innerText = `${sizeX}x${sizeY}`

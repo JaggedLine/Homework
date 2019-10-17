@@ -204,21 +204,22 @@ button:disabled {
 }
 
 .active {
-    /* background-color: rgb(255, 166, 0) !important; */
-    background-color: sandybrown !important;
-    color: white;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-}
-
-.not-active {
-    border-top: 1px solid #e68f6d;
-    border-bottom: 1px solid #e68f6d;
+    background-color: white !important;
     color: black;
+    z-index: 1;
+    box-shadow: 0 0 8px 0 white;
 }
 
 .field-navigator {
     max-width: 100%;
+}
+
+.leaderboards-title {
+    margin-bottom: 40px;
+}
+
+.leaderboards-title p {
+    margin-bottom: 0;
 }
 
 .table-responsive {

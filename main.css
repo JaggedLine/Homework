@@ -207,7 +207,7 @@ button:disabled {
     background-color: white !important;
     color: black;
     z-index: 1;
-    box-shadow: 0 0 8px 0 white;
+    box-shadow: 0 0 5px 0 white;
 }
 
 .field-navigator {

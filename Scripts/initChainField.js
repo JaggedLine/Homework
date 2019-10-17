@@ -24,7 +24,9 @@ let euclideaFieldStyle = {
 
     gridStep: 10,
     minGridStep: 25,
-    maxGridStep: 60,
+    maxGridStep: 75,
+    maxHeight: 350,
+    maxWidth: 350,
 }
 
 let chainField = new ChainField(euclideaFieldStyle);

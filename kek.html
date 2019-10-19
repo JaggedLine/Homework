@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Homework</title>
+    <style>
+        *, *::after, *::before {
+            box-sizing: border-box;
+        }
+
+        .left-shift
+        {
+            margin-left: 100px;
+        }
+        .right-shift
+        {
+            margin-right: 100px;
+        }
+        .top-shift:
+        {
+            margin-top: 30px;
+        }
+        .left-block
+        {
+            display: inline-block;
+            position: absolute;
+            width: 50%;
+            top: 0px;
+            left: 0px;
+            background: green;
+        }
+        .right-block
+        {
+            display: inline-block;
+            position: absolute;
+            width: 50%;
+            top: 0px;
+            left: 50%;
+            background: red;
+        }
+        .norm
+        {
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-flow: row
+        }
+        .inner
+        {
+            flex: 1;
+            height: 100%;
+            background: #eee;
+        }
+        .node
+        {
+            position: absolute;
+            border-radius: 50%;
+            background-size: 100% !important;
+            border-width: 0;
+        }
+        .grid
+        {
+            position: absolute;
+        }
+        .segment
+        {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%; background: grey;">
+        <img src="logo.png" style="margin-top: 10px; margin-bottom: 10px; height: 30px" class="left-shift">
+        <img src="logo2.png" style="margin-top: 10px; margin-bottom: 10px; height: 30px">
+    </div>
+    <div class="norm" style="height: 200px">
+        <div class="inner">
+            <div class="left-shift top-shift">
+                <h1> Geometric puzzle </h1>
+                <h2> Find the longest solution, the one which is built in the maximum number of moves - and you will get the highest score </h2>
+            </div>
+        </div>
+        <div class="inner" style="overflow-y: hidden">
+            <img src="picture.svg" style="width: 100%">
+            <img src="picture.svg" style="width: 100%; margin-top: -10px">
+            <img src="picture.svg" style="width: 100%; margin-top: -10px">
+        </div>
+    </div>
+    <div class="norm" style="height: 400px; background: purple">
+        <div class="inner">
+            <div id="score"></div>
+        </div>
+        <div class="inner">
+            <div id="field">
+                <div id="grid"></div>
+                <div id="segments"></div>
+                <div id="nodes"></div>
+                <div id="data" style="display: none" score="0" points="[[3, 3]]" field_size_x="7" field_size_y="7"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="animations.js"></script>
+    <script src="table.js"></script>
+    <script src="submit.js"></script>
+    <script src="score_table.js"></script>
+</body>
+
+</html>

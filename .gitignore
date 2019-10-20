@@ -105,3 +105,6 @@ venv.bak/
 
 # saves
 table_*.json
+
+# config
+config.js

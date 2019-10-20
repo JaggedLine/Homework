@@ -38,7 +38,7 @@ async function sendJSON()
             name: name,
         })
     };
-    await fetch("/results.json", send_object).then(showSuccess).catch(err => showError('Unable to send your chain!'));
+    await fetch(`${baseURL}/results.json`, send_object).then(showSuccess).catch(err => showError('Unable to send your chain!'));
 }
 
 submit_button.addEventListener('click', sendJSON);

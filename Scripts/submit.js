@@ -15,7 +15,7 @@ function showSuccess()
 function showError(err)
 {
     document.getElementById('submit_error').removeAttribute('hidden');
-    document.getElementById('submit_error').innerText = err;
+    document.getElementById('submit_error').innerText = err || '';
     setTimeout(() => document.getElementById('submit_error').setAttribute('hidden', ''), 3000);
 }
 

@@ -22,18 +22,7 @@ function update_table(scores) {
     return;
 }
 
-function comp(a, b) {
-    return b[1]*1 - a[1]*1;
-}
-
-async function update() {
-    let field_size = {
-        x_size: chainField.sizeX,
-        y_size: chainField.sizeY
-    };
-    update_table(cache(field_size.x_size + ',' + field_size.y_size) || []);
-    let url = `${baseURL}/Results/table_${field_size.x_size}_${field_size.y_size}.json`;
-    let response = await fetch(url).catch(err => showError());
+async function process_response(response) {
     let bad_scores = await response.json();
     let scores = [];
     for (let i = 0; i < Object.keys(bad_scores).length; ++i) {
@@ -42,7 +31,18 @@ async function update() {
     }
     scores.sort(comp);
     update_table(scores);
-    cache(field_size.x_size + ',' + field_size.y_size, scores);
+    cache(chainField.sizeX + ',' + chainField.sizeY, scores);
+}
+
+function comp(a, b) {
+    return b[1]*1 - a[1]*1;
+}
+
+async function update() {
+    update_table(cache(chainField.sizeX + ',' + chainField.sizeY) || []);
+    let url = `${baseURL}/Results/table_${chainField.sizeX}_${chainField.sizeY}.json`;
+    fetch(url).then(process_response).catch(err => showError());
+    
     return;
 }
 

@@ -1,3 +1,11 @@
+function cache(key, value) 
+{
+    if (value === undefined) {
+        return cache[key];
+    }
+    cache[key] = value;
+}
+
 const rowsCnt = 5;
 
 function update_table(scores) {
@@ -19,11 +27,11 @@ function comp(a, b) {
 }
 
 async function update() {
-    update_table([]);
     let field_size = {
         x_size: chainField.sizeX,
         y_size: chainField.sizeY
     };
+    update_table(cache(field_size.x_size + ',' + field_size.y_size) || []);
     let url = `${baseURL}/Results/table_${field_size.x_size}_${field_size.y_size}.json`;
     let response = await fetch(url).catch(err => showError());
     let bad_scores = await response.json();
@@ -34,6 +42,7 @@ async function update() {
     }
     scores.sort(comp);
     update_table(scores);
+    cache(field_size.x_size + ',' + field_size.y_size, scores);
     return;
 }
 

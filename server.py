@@ -2,6 +2,12 @@ from http.server import BaseHTTPRequestHandler,HTTPServer
 import json, os
 
 PORT_NUMBER = 8013
+FIELD_SIZES = {
+    (6, 6): ((3, 3), (4, 5)),
+    (7, 7): ((3, 3), (4, 6)),
+    (8, 8): ((3, 3), (4, 6)),
+    (10, 10): ((3, 3), (4, 6)),
+}
 
 class SecurityError(Exception):
     def __init__(self, message):
@@ -31,13 +37,19 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
         return True
     return False
 
-def verify_and_calc(data: tuple, field_size: tuple) -> int:
+def verify_and_calc(data: tuple, field_size: tuple, ends: tuple) -> int:
     line, x, y = data
     knight_dir = [(1, 2), (2, 1), (-1, 2), (2, -1), (-2, 1), (1, -2), (-1, -2), (-2, -1)]
     if (len(set(line)) != len(line)):
         raise SecurityError("STOP CHEATING! BAN! (Points must be unique)")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
         raise SecurityError("STOP CHEATING! BAN! (Your chain is out of bounds!)")
+    print(CORRECT_FIELD_SIZES)
+    if (tuple(field_size) not in CORRECT_FIELD_SIZES):
+        raise SecurityError("STOP CHEATING! BAN! (Incorrect field size)")
+    if ((x[0], y[0]) != ends[0] or (x[-1], y[-1]) != ends[1]):
+        print((x[0], y[0]), ends[0], (x[-1], y[-1]), ends[1])
+        raise SecurityError("STOP CHEATING! BAN! (Your chain has incorrect ends!)")
     for i in range(1, len(line)):
         if ((line[i][0]-line[i-1][0], line[i][1]-line[i-1][1]) not in knight_dir):
             raise SecurityError("STOP CHEATING! BAN! (Segments must be like a knight move)")
@@ -114,7 +126,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         field_size = (int(self.headers["Field-Size-X"]), int(self.headers["Field-Size-Y"]))
         try:
-            result = verify_and_calc(data, field_size)
+            result = verify_and_calc(data, field_size, FIELD_SIZES.get(field_size))
         except SecurityError as e:
             self.send_error(403, e.message)
             return

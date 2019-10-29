@@ -44,7 +44,6 @@ def verify_and_calc(data: tuple, field_size: tuple, ends: tuple) -> int:
         raise SecurityError("STOP CHEATING! BAN! (Points must be unique)")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
         raise SecurityError("STOP CHEATING! BAN! (Your chain is out of bounds!)")
-    print(CORRECT_FIELD_SIZES)
     if (tuple(field_size) not in CORRECT_FIELD_SIZES):
         raise SecurityError("STOP CHEATING! BAN! (Incorrect field size)")
     if ((x[0], y[0]) != ends[0] or (x[-1], y[-1]) != ends[1]):

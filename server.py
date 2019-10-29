@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler,HTTPServer
 import json, os
 
 PORT_NUMBER = 8013
-FIELD_SIZES = {
+FIELDS_INFO = {
     (6, 6): ((3, 3), (4, 5)),
     (7, 7): ((3, 3), (4, 6)),
     (8, 8): ((3, 3), (4, 6)),
@@ -17,20 +17,20 @@ def process(data: str) -> tuple:
     ddict = json.loads(data)
     line_bad = ddict["points"]
     name = ddict["name"]
-    if name == "" or line_bad is None:
+    if name == "" or len(name) > 100 or line_bad is None:
         return ("", None)
     line = [(i[0], i[1]) for i in line_bad]
     x = [i[0] for i in line_bad]
     y = [i[1] for i in line_bad]
     return (name, (line, x, y))
 
-def vec_mul(a: tuple, b: tuple) -> tuple:
+def cross_product(a: tuple, b: tuple) -> tuple:
     return a[0] * b[1] - a[1] * b[0]
 
 def intersect(segment1: tuple, segment2: tuple) -> bool:
     x1, y1, x2, y2, x3, y3, x4, y4 = segment1[0][0], segment1[0][1], segment1[1][0], segment1[1][1], segment2[0][0], segment2[0][1], segment2[1][0], segment2[1][1]
-    a = vec_mul((x2 - x1, y2 - y1), (x3 - x1, y3 - y1)) * vec_mul((x2 - x1, y2 - y1), (x4 - x1, y4 - y1))
-    b = vec_mul((x4 - x3, y4 - y3), (x1 - x3, y1 - y3)) * vec_mul((x4 - x3, y4 - y3), (x2 - x3, y2 - y3))
+    a = cross_product((x2 - x1, y2 - y1), (x3 - x1, y3 - y1)) * cross_product((x2 - x1, y2 - y1), (x4 - x1, y4 - y1))
+    b = cross_product((x4 - x3, y4 - y3), (x1 - x3, y1 - y3)) * cross_product((x4 - x3, y4 - y3), (x2 - x3, y2 - y3))
     if a <= 0 and b <= 0:
         if a == 0 and b == 0:
             return False
@@ -40,14 +40,15 @@ def intersect(segment1: tuple, segment2: tuple) -> bool:
 def verify_and_calc(data: tuple, field_size: tuple, ends: tuple) -> int:
     line, x, y = data
     knight_dir = [(1, 2), (2, 1), (-1, 2), (2, -1), (-2, 1), (1, -2), (-1, -2), (-2, -1)]
+    if len(line) == 0:
+        raise SecurityError("STOP CHEATING! BAN! (Chain must be not empty)")
     if (len(set(line)) != len(line)):
         raise SecurityError("STOP CHEATING! BAN! (Points must be unique)")
     if (max(y) >= field_size[1] or min(y) < 0 or max(x) >= field_size[0] or min(x) < 0):
         raise SecurityError("STOP CHEATING! BAN! (Your chain is out of bounds!)")
-    if (tuple(field_size) not in CORRECT_FIELD_SIZES):
+    if (tuple(field_size) not in FIELDS_INFO):
         raise SecurityError("STOP CHEATING! BAN! (Incorrect field size)")
     if ((x[0], y[0]) != ends[0] or (x[-1], y[-1]) != ends[1]):
-        print((x[0], y[0]), ends[0], (x[-1], y[-1]), ends[1])
         raise SecurityError("STOP CHEATING! BAN! (Your chain has incorrect ends!)")
     for i in range(1, len(line)):
         if ((line[i][0]-line[i-1][0], line[i][1]-line[i-1][1]) not in knight_dir):
@@ -125,10 +126,11 @@ class Handler(BaseHTTPRequestHandler):
             return
         field_size = (int(self.headers["Field-Size-X"]), int(self.headers["Field-Size-Y"]))
         try:
-            result = verify_and_calc(data, field_size, FIELD_SIZES.get(field_size))
+            result = verify_and_calc(data, field_size, FIELDS_INFO.get(field_size))
         except SecurityError as e:
             self.send_error(403, e.message)
             return
+        print(name, field_size, "Score =", result, data[0])
         save_results((name, result), field_size)
         self.send_response(200)
         self.send_header("Content-type", "")

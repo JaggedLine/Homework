@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
-import json, os
+from operator import itemgetter
+import json, os, time
 
 PORT_NUMBER = 8013
 FIELDS_INFO = {
@@ -8,6 +9,8 @@ FIELDS_INFO = {
     (8, 8): ((3, 3), (4, 6)),
     (10, 10): ((3, 3), (4, 6)),
 }
+# max count of saved result
+DB_SIZE = 100
 
 class SecurityError(Exception):
     def __init__(self, message):
@@ -75,6 +78,8 @@ def save_results(result: tuple, field_size: tuple) -> None:
     if (not result[0] in a.keys()):
         a[result[0]] = result[1]
     a[result[0]] = max(a[result[0]], result[1])
+
+    a = dict(sorted(a.items(), reverse=True, key=itemgetter(1, 0))[:DB_SIZE])
 
     f = open(fname, 'w', encoding="utf-8")
     json.dump(a, f, indent=4, ensure_ascii=False)

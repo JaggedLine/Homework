@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler,HTTPServer
 from operator import itemgetter
 import json, os, time
 
-PORT_NUMBER = 8013
+PORT_NUMBER = 8004
 FIELDS_INFO = {
     (6, 6): ((3, 3), (4, 5)),
     (7, 7): ((3, 3), (4, 6)),

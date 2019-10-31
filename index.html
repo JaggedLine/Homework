@@ -12,150 +12,131 @@
     <link rel="shortcut icon" href="Images/favicon.png">
 
     <title>Homework</title>
-</head>
+
+<html>
 
 <body>
-    <nav class="my-navbar">
-        <div class="container">
-            <a href="index.html" class="brand">
-                <img src="Images/logo.png" class="image-sm"><img src="Images/logo2.png" class="image-sm">
+    <div class="header">
+        <div class="header-content">
+            <a href="/" class="brand">
+                <img src="Images/logo.png" class="im-logo">
+                <img src="Images/logo2.png" class="im-logo">
             </a>
         </div>
-    </nav>
-    <div class="container">
-        <div class="flex">
-            <div class="column base-50 minw-300 jumbotron bg-white">
-                <p class="title text-center">Geometric puzzle</p>
-                <p class="text col-darkgrey">
-                    Find the longest solution, which is built in the maximum possible moves, 
-                    - and you will get the highest score.
-                </p>
-            </div>
-            <div class="column base-50 minw-300 geo-image"></div>
-        </div>
-        <div class="flex">
-            <div class="column base-50 minw-300 jumbotron bg-darkblue">
-                <p class="title text-center col-white">The longest polygonal chain</p>
-                <p class="text col-grey">
-                    Construct the longest non-self-intersecting polyline
-                    whose vertices are nodes of the grid and the length of each edge is knight move.
-                </p>
-                <br>
-                <input id="name" placeholder="Your name" class="my-10">
-                <button class="bg-orange my-10" id="submit_button" disabled>
-                    Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
-                </button>
-                <span class="col-green" id="submit_success" hidden>Your chain was successfully submitted!</span>
-                <span class="col-red" id="submit_error" hidden></span>
-            </div>
-            <div class="column base-50 minw-300 jumbotron bg-darkblue">
-                <div class="column">
-                    <div class="mx-auto my-auto field" id="field">
-                        <div id="grid"></div>
-                        <div id="segments"></div>
-                        <div id="nodes"></div>
-                        <div id="data" style="display: none"></div>
-                    </div>
-                </div>
-                <br>
-                <div class="flex mx-auto field-navigator" id="field_navigator">
-                    <div class="column base-0">
-                        <button fieldsizex="6" fieldsizey="6">6x6</button>
-                    </div>
-                    <div class="column base-0">
-                        <button class="active" fieldsizex="7" fieldsizey="7">7x7</button>
-                    </div>
-                    <div class="column base-0">
-                        <button fieldsizex="8" fieldsizey="8">8x8</button>
-                    </div>
-                    <div class="column base-0">
-                        <button fieldsizex="10" fieldsizey="10">10x10</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="column base-50 minw-300 jumbotron bg-white">
-                <p class="title">Rules</p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Carefully read the statement of the problem and look at the picture with example.
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Solve the problem on squared paper or in one of the levels from #Pythagorea app.
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Post a screenshot of your solution. Your account should be public so that we can see your post.
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Add hashtags #euclidea and #euclidea_puzzle_8.
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Mention @euclidea_app on the screenshot.
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-green"></span>
-                    Write a kukarek why your answer is correct (optional).
-                </p>
-                <p class="text-sm">
-                    <span class="fa fa-check-square col-darkgrey"></span>
-                    You can also send us a message with solution in Direct, but publishing a post is better.
-                </p>
-            </div>
-            <div class="column base-50 minw-300 jumbotron bg-green">
-                <div class="leaderboards-title">
-                    <p class="title col-white">
-                        Leaderboards
-                    </p>
-                    <p class="col-white">
-                        <i>field size: <span id="fieldSize">7x7</span></i>
-                    </p>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td class="col-white">1. </td>
-                                <td class="col-white text-cut"><span id="n1">Nobody</span></td>
-                                <td class="col-white"><span id="s1">---</span> points</td>
-                            </tr>
-                            <tr>
-                                <td class="col-white">2. </td>
-                                <td class="col-white text-cut"><span id="n2">Nobody</span></td>
-                                <td class="col-white"><span id="s2">---</span> points</td>
-                            </tr>
-                            <tr>
-                                <td class="col-white">3. </td>
-                                <td class="col-white text-cut"><span id="n3">Nobody</span></td>
-                                <td class="col-white"><span id="s3">---</span> points</td>
-                            </tr>
-                            <tr>
-                                <td class="col-white">4. </td>
-                                <td class="col-white text-cut"><span id="n4">Nobody</span></td>
-                                <td class="col-white"><span id="s4">---</span> points</td>
-                            </tr>
-                            <tr>
-                                <td class="col-white">5. </td>
-                                <td class="col-white text-cut"><span id="n5">Nobody</span></td>
-                                <td class="col-white"><span id="s5">---</span> points</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
+    <table class="content" cellspacing="0">
+        <tr class="layer layer-1">
+            <td>
+                <div class="pd-l-130 pd-r-70 v-center">
+                    <h1>Geometric puzzle</h1>
+                    <p>
+                        Find the most elegant solution - the one, which is built in the least possible moves, - and you'll get the highest score. 
+                    </p>
+                </div>
+            </td>
+            <td style="background: url(Images/picture.svg); background-size: 100%">
+            </td>
+        </tr>
+        <tr class="layer layer-2">
+            <td class="v-flex">
+                <div class="pd-l-130 pd-r-70 flex-1 flex">
+                    <div class="v-center">
+                        <h2 class="text-white">The longest polygonal chain.</h2>
+                        <p>
+                            Construct the longest non-self-intersecting polyline whose vertices are node of the 6x6 grid and the length of each edge is 2.236...
+                        </p>
+                    </div>
+                </div>
+                <div class="pd-l-130 pd-r-70 flex-1 flex">
+                    <div class="v-center">
+                        <input id="name" class="submit-field submit-input" placeholder="Your name"><br>
+                        <button class="submit-field submit-button" id="submit_button" disabled>
+                            Your score is <span id="score">0</span>. <span id="submit_it" hidden>Submit it!</span>
+                        </button>
+
+                        <span class="text-green" id="submit_success" hidden>Your chain was successfully submitted!</span>
+                        <span class="text-red" id="submit_error" hidden></span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div id="field">
+                    <div id="grid"></div>
+                    <div id="segments"></div>
+                    <div id="nodes"></div>
+                    <div id="data" style="display: none"></div>
+                </div>
+            </td>
+        </tr>
+        <tr class="layer layer-3">
+            <td>
+                <div class="pd-l-130 pd-t-50 w-100 pd-r-70 rules">
+                    <h2>Rules</h2>
+                    <p>
+                        Carefully read the statement of the problem and look at the picture with example
+                    </p>
+                    <p>
+                        Solve the problem on squared paper or in one of the levels from #Pythagorea app (like 1.1)
+                    </p>
+                    <p>
+                        Post a screenshot of your solution. Your account should be public so that we can see your post.
+                    </p>
+                    <p>
+                        Add hashtags #euclidea and #euclidea_puzzle_8
+                    </p>
+                    <p>
+                        Mention @euclidea_app on the screenshot
+                    </p>
+                    <p>
+                        Write a proof why your answer is correct (optional)
+                    </p>
+                    <p>
+                        You can also send us a message with solution in Direct, but publishing a post is better
+                    </p>
+                </div>
+            </td>
+            <td class="leaderboard">
+                <div class="pd-t-50 w-100">
+                    <h2 class="text-white text-center" style="width: 100%">Leaderboards</h2>
+                    <div class="pd-l-130 pd-t-10 leaderboard-content">
+                        <table class="text-white">
+                            <tr class="layer pd-t-50">
+                                <td>1.</td>
+                                <td class="lb-username" id="n1"> Mark</td>
+                                <td id="s1"> 288 points </td>
+                            </tr>
+                            <tr class="layer pd-t-50">
+                                <td>2.</td>
+                                <td class="lb-username" id="n2"> Mark</td>
+                                <td id="s2"> 288 points </td>
+                            </tr>
+                            <tr class="layer pd-t-50">
+                                <td>3.</td>
+                                <td class="lb-username" id="n3"> Mark</td>
+                                <td id="s3"> 288 points </td>
+                            </tr>
+                            <tr class="layer pd-t-50">
+                                <td>4.</td>
+                                <td class="lb-username" id="n4"> Mark</td>
+                                <td id="s4"> 288 points </td>
+                            </tr>       
+                            <tr class="layer pd-t-50">
+                                <td>5.</td>
+                                <td class="lb-username" id="n5"> Mark</td>
+                                <td id="s5"> 288 points </td>
+                            </tr>               
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
     <script src="Chain-Field/common.js"></script>
     <script src="Chain-Field/animations.js"></script>
     <script src="Chain-Field/games.js"></script>
     <script src="Chain-Field/ChainField.js"></script>
     <script src="Scripts/config.js"></script>
     <script src="Scripts/initChainField.js"></script>
-    <script src="Scripts/FieldNavigator.js"></script>
     <script src="Scripts/submit.js"></script>
     <script src="Scripts/score_table.js"></script>
 </body>

@@ -46,7 +46,7 @@ p {
     display: flex;
 }
 
-.layer td {
+.layer > td {
     flex: 1;
     display: flex;
 }
@@ -72,6 +72,23 @@ p {
 
 .leaderboard-content {
     font-size: 20px;
+}
+
+.leaderboard-table td:nth-child(1) {
+    width: 75px;
+}
+
+.leaderboard-table td:nth-child(2) {
+    width: 200px;
+    max-width: 200px;
+}
+
+.leaderboard-table td:nth-child(3) {
+    width: 150px;
+}
+
+.leaderboard-table tr{
+    height: 50px;
 }
 
 .v-center {
@@ -171,7 +188,10 @@ p {
 
 
 .lb-username {
-    width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    padding-right: 20px;
 }
 
 

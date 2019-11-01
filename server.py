@@ -135,13 +135,18 @@ class Handler(BaseHTTPRequestHandler):
         except SecurityError as e:
             self.send_error(403, e.message)
             return
-        print(name, field_size, "Score =", result, data[0])
+        with open("Results/results.log", "w") as f:
+            print('Name: {}; FieldSize: {}; Score: {}; Chain: {}'.format(
+                  name, field_size, result, data[0]), file=f)
         save_results((name, result), field_size)
         self.send_response(200)
         self.send_header("Content-type", "")
         self.end_headers()
 
 try:
+    import sys
+    buffer = 1
+    sys.stderr = open('logfile.txt', 'w', buffer)
     server = HTTPServer(("", PORT_NUMBER), Handler)
     server.serve_forever()
 except KeyboardInterrupt:
